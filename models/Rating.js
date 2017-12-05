@@ -2,13 +2,17 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const reviewReplySchema = new Schema({
-    reply: String
+    body: String,
+    image: String
 });
 
 const ratingsReviewsSchema = new Schema({
     createdBy: { type: Schema.ObjectId, ref: 'Account' },
     rating: Number,
-    review: String,
+    review: {
+        body: String,
+        image: String
+    },
     reviewReply: [ reviewReplySchema ]
 });
 

@@ -9,11 +9,12 @@ function register(req, res, next) {
     Account
         .create(req.body)
         .then(account => {
-            if (req.body.role === 'artist') createArtist(req, res, next, account);
-
-            const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
-
-            return res.json({ message: `Welcome ${account.username}`, token, account });
+            if (req.body.role === 'artist') {
+                createArtist(req, res, next, account);
+            } else {
+                const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
+                return res.json({ message: `Welcome ${account.username}`, token, account });
+            } 
         })
         .catch(next);
 }

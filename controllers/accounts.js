@@ -3,7 +3,10 @@ const Account = require('../models/Account');
 function accountsIndex(req, res, next) {
     Account
         .find()
-        .populate('_admin _user _artist')
+        .populate({
+            path: '_artist', 
+            populate: { path: 'styles' }
+        })
         .exec()
         .then(accounts => {
             if (!accounts) res.notFound();
