@@ -5,4 +5,6 @@ const countrySchema = new Schema({
     name: String
 });
 
+countrySchema.plugin(require('../lib/globalToJSON'));
+
 module.exports = mongoose.model('Country', countrySchema);

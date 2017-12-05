@@ -9,13 +9,11 @@ function register(req, res, next) {
     Account
         .create(req.body)
         .then(account => {
-            if (req.body.role === 'admin') {
-                createAdmin(req, res, next, account);
-            } else if (req.body.role === 'artist') {
-                createArtist(req, res, next, account);
-            } else {
-                createUser(req, res, next, account);
-            }
+            if (req.body.role === 'artist') createArtist(req, res, next, account);
+
+            const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
+
+            return res.json({ message: `Welcome ${account.username}`, token, account });
         })
         .catch(next);
 }
@@ -34,32 +32,30 @@ function login(req, res, next) {
         .catch(next);
 }
 
-function createAdmin(req, res, next, account) {
-    Admin
-        .create(req.body)
-        .then(admin => {
-            console.log(admin);
+// function createAdmin(req, res, next, account) {
+//     Admin
+//         .create(req.body)
+//         .then(admin => {
+//             console.log(admin);
 
-            account._admin = admin.id;
-            account.password = req.body.password;
-            account.passwordConfirmation = req.body.passwordConfirmation;
+//             account._admin = admin.id;
+//             // account.password = req.body.password;
+//             // account.passwordConfirmation = req.body.passwordConfirmation;
 
-            account.save();
+//             account.save();
 
-            const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
+//             const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
 
-            return res.json({ message: `Welcome ${account.username}`, token, account });
-        })
-        .catch(next);
-}
+//             return res.json({ message: `Welcome ${account.username}`, token, account });
+//         })
+//         .catch(next);
+// }
 
 function createArtist(req, res, next, account) {
     Artist
         .create(req.body)
         .then(artist => {
             account._artist = artist.id;
-            account.password = req.body.password;
-            account.passwordConfirmation = req.body.passwordConfirmation;
 
             account.save();
 
@@ -70,23 +66,23 @@ function createArtist(req, res, next, account) {
         .catch(next);
 }
 
-function createUser(req, res, next, account) {
-    User
-        .create(req.body)
-        .then(user => {
-            account._user = user.id;
-            account.password = req.body.password;
-            account.passwordConfirmation = req.body.passwordConfirmation;
+// function createUser(req, res, next, account) {
+//     User
+//         .create(req.body)
+//         .then(user => {
+//             account._user = user.id;
+//             // account.password = req.body.password;
+//             // account.passwordConfirmation = req.body.passwordConfirmation;
 
-            account.save();
+//             account.save();
 
 
-            const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
+//             const token = jwt.sign({ userId: account.id }, secret, { expiresIn: '1hr' });
 
-            return res.json({ message: `Welcome ${account.username}`, token, account });
-        })
-        .catch(next);
-}
+//             return res.json({ message: `Welcome ${account.username}`, token, account });
+//         })
+//         .catch(next);
+// }
 
 module.exports = {
     register,
