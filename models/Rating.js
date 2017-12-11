@@ -7,7 +7,7 @@ const reviewReplySchema = new Schema({
 });
 
 const ratingsReviewsSchema = new Schema({
-    createdBy: { type: Schema.ObjectId, ref: 'Account' },
+    createdBy: { type: Schema.ObjectId, ref: 'User' },
     rating: Number,
     review: {
         body: String,

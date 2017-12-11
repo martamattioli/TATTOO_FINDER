@@ -15,16 +15,4 @@ styleSchema
         next();
     });
 
-// styleSchema
-//     .pre('init', function(next, doc) {
-//         console.log('preinit', doc);
-        
-//         next();
-//     });
-
-// styleSchema
-//     .post('init', function(doc) {
-//         console.log('postinit', doc);
-//     });
-
 module.exports = mongoose.model('Style', styleSchema);

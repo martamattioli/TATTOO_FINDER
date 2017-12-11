@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const oauth = require('../config/oauth');
-const Account = require('../models/Account');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { secret } = require('../config/env');
 
@@ -33,11 +33,11 @@ function facebook(req, res, next) {
             });
         })
         .then(profile => {
-            return Account
+            return User
                 .findOne({ $or: [{ email: profile.email }, { facebookId: profile.id }] })
-                .then(account => {
-                    if (!account) {
-                        account = new Account({
+                .then(user => {
+                    if (!user) {
+                        user = new User({
                             username: profile.name,
                             facebookId: profile.id,
                             image: profile.picture.data.url,
@@ -45,20 +45,20 @@ function facebook(req, res, next) {
                         });
                     }
 
-                    account.facebookId = profile.id;
-                    account.image = profile.picture.data.url;
-                    return account.save();
+                    user.facebookId = profile.id;
+                    user.image = profile.picture.data.url;
+                    return user.save();
                 });
         })
-        .then(account => {
-            console.log(account);
-            const payload = { userId: account.id };
+        .then(user => {
+            console.log(user);
+            const payload = { userId: user.id };
             const token = jwt.sign(payload, secret, { expiresIn: '1hr' });
 
             return res.json({
                 token,
                 user,
-                message: `Welcome back ${account.username}`
+                message: `Welcome back ${user.username}`
             });
         })
         .catch(next);

@@ -1,22 +1,21 @@
-const Account = require('../models/Account');
+const User = require('../models/User');
 const Rating = require('../models/Rating');
 
-function accountRatingCreate(req, res, next) {
-    Account
+function userRatingCreate(req, res, next) {
+    User
         .findById(req.params.id)
         .exec()
-        .then(account => {
-            if (!account) return res.status(404).json({ message: 'Errm... not found' });
+        .then(user => {
+            if (!user) return res.status(404).json({ message: 'Errm... not found' });
             req.body.createdBy = req.currentUser;
-            account.ratingsReviews.push(req.body);
+            user.ratingsReviews.push(req.body);
 
-            return account.save();
+            return user.save();
         })
-        .then(account => res.status(200).json(account))
+        .then(user => res.status(200).json(user))
         .catch(next);
-    
 }
 
 module.exports = {
-    accountRatingCreate
+    userRatingCreate
 }
