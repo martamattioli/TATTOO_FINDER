@@ -42,7 +42,8 @@ router.route('/studios')
     .post(studios.create);
 
 router.route('/studios/:id')
-    .get(studios.show);
+    .get(studios.show)
+    .delete(studios.delete);
 
 router.route('/countries')
     .get(countries.index)

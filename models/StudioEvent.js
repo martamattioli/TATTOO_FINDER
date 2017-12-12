@@ -6,6 +6,7 @@ const studioEventSchema = new Schema({
     name: String,
     country: { type: Schema.ObjectId, ref: 'Country', required: 'This field is queired' },
     address: String,
+    image: String,
     locationId: { type: String, unique: true },
     location: {
         lat: Number,

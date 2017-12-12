@@ -1,0 +1,7 @@
+.flag-img {
+    @include centerBackgr;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+}

@@ -12,17 +12,19 @@ const globalToJSON = require('./lib/globalToJSON');
 
 const app = express();
 
-mongoose.connect(db, { useMongoClient: true });
 mongoose.Promise = bluebird;
 mongoose.plugin(globalToJSON);
 mongoose.plugin(mongooseUniqueValidator);
+mongoose.connect(db, { useMongoClient: true });
 
 app.use(morgan('dev'));
+app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.json());
 
 app.use(customResponses);
 
 app.use('/api', routes);
+app.get('/*', (req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
 app.use(errorHandler);
 

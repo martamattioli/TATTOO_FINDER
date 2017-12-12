@@ -19,11 +19,15 @@ function studioEventsCreate(req, res, next) {
 }
 
 function studiosEventsIndex(req, res, next) {
+    console.log('hit studios index');
     StudioEvent
         .find()
         .populate('artists country')
         .exec()
-        .then(studiosEvents => res.status(200).json(studiosEvents))
+        .then(studiosEvents => {
+            console.log(studiosEvents);
+            res.status(200).json(studiosEvents);
+        })
         .catch(next);
 }
 
@@ -36,8 +40,16 @@ function studiosEventsShow(req, res, next) {
         .catch(next);
 }
 
+function studiosEventsDelete(req, res, next) {
+    StudioEvent
+        .findByIdAndRemove(req.params.id)
+        .then(() => res.status(200).json({ message: 'Deleted' }))
+        .catch(next);
+}
+
 module.exports = {
     create: studioEventsCreate,
     index: studiosEventsIndex,
-    show: studiosEventsShow
+    show: studiosEventsShow,
+    delete: studiosEventsDelete
 }
