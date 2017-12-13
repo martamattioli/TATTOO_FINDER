@@ -16,29 +16,30 @@ const Country = require('../models/Country');
 // Country.drop();
 
 mongoose
-    .connect(db, { useMongoClient: true })
-    .then(db => db.dropDatabase())
-    .then(() => rp({
-        url: 'https://restcountries.eu/rest/v2/all',
-        method: 'GET',
-        json: true
-        })
-        .then(countries => {
-            const newCountries = countries.map(country => {
-                const countryObj = {
-                    used: false,
-                    name: country.name,
-                    continent: country.region || 'unknown',
-                    flag: country.flag,
-                };
-                
-                return countryObj;
-            });            
-            return Country
-                .create(newCountries);
-        })
-        .then(countries => console.log(`${countries.length} countries were created`))
-        .catch(err => console.log(err))
-    )
+  .connect(db, { useMongoClient: true })
+  .then(db => db.dropDatabase())
+  .then(() => rp({
+    url: 'https://restcountries.eu/rest/v2/all',
+    method: 'GET',
+    json: true
+  })
+    .then(countries => {
+      const newCountries = countries.map(country => {
+        const countryObj = {
+          used: false,
+          name: country.name,
+          continent: country.region || 'unknown',
+          flag: country.flag
+        };
+
+        return countryObj;
+      });
+      return Country
+        .create(newCountries);
+    })
+    .then(countries => console.log(`${countries.length} countries were created`))
     .catch(err => console.log(err))
-    .finally(() => mongoose.connection.close());
+  )
+  // .then(() => ADD REQUEST PROMISE TO SEARCH FOR TATTOOPARLOURS AND STUDIOS)
+  .catch(err => console.log(err))
+  .finally(() => mongoose.connection.close());

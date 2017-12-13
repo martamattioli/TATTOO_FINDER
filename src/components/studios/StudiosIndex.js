@@ -1,7 +1,7 @@
 import React from 'react';
 import Axios from'axios';
 
-import CardItem from '../cards/CardItem';
+import CardItem from '../elements/CardItem';
 
 class StudiosIndex extends React.Component {
   constructor() {
@@ -22,6 +22,7 @@ class StudiosIndex extends React.Component {
   render() {
     console.log(this.state.studios);
     return(
+      // ADD FILTER BY COUNTRY
       <section>
         { this.state.studios && <div>
           <h1>Check out the studios</h1>
