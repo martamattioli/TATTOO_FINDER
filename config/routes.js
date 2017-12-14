@@ -12,41 +12,41 @@ const studios = require('../controllers/studios');
 const countries = require('../controllers/countries');
 
 router.route('/register')
-    .post(auth.register);
+  .post(auth.register);
 
 router.route('/login')
-    .post(auth.login);
+  .post(auth.login);
 
 router.route('/oauth/facebook')
-    .post(oauth.facebook);
+  .post(oauth.facebook);
 
 router.route('/users')
-    .get(users.index);
+  .get(users.index);
 
 router.route('/users/:id')
-    .get(users.show)
-    .put(users.update);
+  .get(users.show)
+  .put(users.update);
 
 router.route('/users/:id/reviews')
-    .post(secureRoute, ratings.userRatingCreate);
+  .post(secureRoute, ratings.userRatingCreate);
 
 router.route('/artists')
-    .get(users.artistsIndex);
+  .get(users.artistsIndex);
 
 router.route('/styles')
-    .get(styles.index)
-    .post(styles.create);
+  .get(styles.index)
+  .post(styles.create);
 
 router.route('/studios')
-    .get(studios.index)
-    .post(studios.create);
+  .get(studios.index)
+  .post(studios.create);
 
 router.route('/studios/:id')
-    .get(studios.show)
-    .delete(studios.delete);
+  .get(studios.show)
+  .delete(studios.delete);
 
 router.route('/countries')
-    .get(countries.index)
-    .post(countries.create);
+  .get(countries.index)
+  .post(countries.create);
 
 module.exports = router;

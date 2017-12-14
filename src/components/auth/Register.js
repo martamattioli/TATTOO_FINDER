@@ -41,7 +41,6 @@ class Register extends React.Component {
     Axios
       .post('/api/register', this.state.user)
       .then(res => {
-        console.log(res);
         Auth.setToken(res.data.token);
         this.props.history.push({
           pathname: '/',
@@ -60,12 +59,13 @@ class Register extends React.Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
         />
+        <a href="#" onClick={() => this.changeRole('artist')}>I am an artist...</a>
+        <a href="#" onClick={() => this.changeRole('user')}>I am a user...</a>
         <p>Already have an account?
           <Link to="/login">Login instead</Link>
         </p>
         <p>Are you an artist?
-          <a onClick={() => this.changeRole('artist')}>Contact us to get an account...</a>
-          <a onClick={() => this.changeRole('user')}>Back to user...</a>
+          <a>Contact us to get an account...</a>
         </p>
       </section>
     );

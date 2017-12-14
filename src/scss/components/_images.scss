@@ -1,7 +1,11 @@
 .flag-img {
+  padding: 3px;
+  display: inline-block;
+  span {
     @include centerBackgr;
     height: 15px;
     width: 15px;
     border-radius: 50%;
     display: inline-block;
+  }
 }

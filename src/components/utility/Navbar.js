@@ -1,16 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-const Navbar = () => {
+import Auth from '../../lib/Auth';
+
+const Navbar = ({ history }) => {
+  function logout(e) {
+    e.preventDefault();
+    Auth.removeToken();
+    history.push('/');
+  }
+
   return(
     <header>
       <Link to="/">Home</Link>
       {' '}
-      <Link to="/register">Register</Link>
+      { !Auth.isAuthenticated() && [
+        <Link key={1} to="/register">Register</Link>,
+        <span key={2}>{' '}</span>,
+        <Link key={3} to="/login">Login</Link>
+      ]}
       {' '}
-      <Link to="/login">Login</Link>
+      { Auth.isAuthenticated() && <a href="#" onClick={logout}>Logout</a>}
     </header>
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);

@@ -14,7 +14,9 @@ class App extends React.Component {
     return(
       <Router>
         <div className="container-fluid">
-          <Navbar />
+          <Navbar
+            logout={this.logout}
+          />
           <main>
             <Routes />
           </main>

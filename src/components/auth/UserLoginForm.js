@@ -6,25 +6,16 @@ import Label from '../elements/formElements/Label';
 import TextInput from '../elements/formElements/TextInput';
 import SubmitButton from '../elements/formElements/SubmitButton';
 
-const UserRegisterForm = ({ user, handleChange, handleSubmit }) => {
+const UserLoginForm = ({ user, handleChange, handleSubmit }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <div>
         <TextInput
           type="text"
-          name="username"
-          value={user.username}
+          name="name"
+          value={user.name}
           onChange={handleChange}
-          placeholder="Username"
-        />
-      </div>
-      <div>
-        <TextInput
-          type="email"
-          name="email"
-          value={user.email}
-          onChange={handleChange}
-          placeholder="Email"
+          placeholder="Email or Username"
         />
       </div>
       <div>
@@ -36,18 +27,9 @@ const UserRegisterForm = ({ user, handleChange, handleSubmit }) => {
           placeholder="Password"
         />
       </div>
-      <div>
-        <TextInput
-          type="password"
-          name="passwordConfirmation"
-          value={user.passwordConfirmation}
-          onChange={handleChange}
-          placeholder="Confirm your password"
-        />
-      </div>
-      <SubmitButton>Sign up</SubmitButton>
+      <SubmitButton>Sign in</SubmitButton>
     </Form>
   );
 };
 
-export default UserRegisterForm;
+export default UserLoginForm;

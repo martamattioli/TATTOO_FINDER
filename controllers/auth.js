@@ -25,10 +25,10 @@ function register(req, res, next) {
 
 function login(req, res, next) {
   User
-    .findOne({ $or: [{ 'username': req.body.username }, { 'email': req.body.email }] })
+    .findOne({ $or: [{ 'username': req.body.name }, { 'email': req.body.name }] })
     .exec()
     .then(user => {
-      if (!user || !user.validatePassword(req.body.password)) return res.status(401).json({ message: 'Incorrect Credentials' });
+      if (!user || !user.validatePassword(req.body.password)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
 
       const token = jwt.sign({ userId: user.id }, secret, { expiresIn: '1hr' });
 

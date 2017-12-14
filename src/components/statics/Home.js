@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import WelcomeMessage from '../elements/messages/WelcomeMessage';
 
 const Home = (props) => {
-  console.log(props);
-  if (props.location.state.message) {
+  if (props.location.state && props.location.state.message) {
     setTimeout(() => {
       props.history.push({ state: { message: null } });
     }, 2000);
@@ -13,7 +12,7 @@ const Home = (props) => {
 
   return(
     <section>
-      {props.location.state.message && <WelcomeMessage>{ props.location.state.message }</WelcomeMessage>}
+      {props.location.state && props.location.state.message && <WelcomeMessage>{ props.location.state.message }</WelcomeMessage>}
       <h1>Tattoo Finder</h1>
       <h2>Search for...</h2>
       <ul>
