@@ -19,7 +19,9 @@ const Home = (props) => {
         <li>
           <Link to="/studios">Studios</Link>
         </li>
-        <li>Artists</li>
+        <li>
+          <Link to="/artists">Artists</Link>
+        </li>
         <li>Styles</li>
       </ul>
     </section>

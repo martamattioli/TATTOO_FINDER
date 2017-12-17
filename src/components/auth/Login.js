@@ -6,6 +6,7 @@ import Auth from '../../lib/Auth';
 
 import UserLoginForm from './UserLoginForm';
 
+import OAuthButton from './OAuthButton';
 import ErrorMessage from '../elements/messages/ErrorMessage';
 
 class Login extends React.Component {
@@ -66,6 +67,7 @@ class Login extends React.Component {
         <p>{'Don\'t'} have an account?
           <Link to="/register">Register instead</Link>
         </p>
+        <OAuthButton provider="facebook">Login with Facebook</OAuthButton>
       </section>
     );
   }

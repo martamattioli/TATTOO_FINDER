@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Auth from '../../lib/Auth';
 
+import OAuthButton from './OAuthButton';
 import UserRegisterForm from './UserRegisterForm';
 
 class Register extends React.Component {
@@ -59,13 +60,17 @@ class Register extends React.Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
         />
-        <a href="#" onClick={() => this.changeRole('artist')}>I am an artist...</a>
-        <a href="#" onClick={() => this.changeRole('user')}>I am a user...</a>
+        <div>
+          <a href="#" onClick={() => this.changeRole('artist')}>I am an artist...</a>
+          {' '}
+          <a href="#" onClick={() => this.changeRole('user')}>I am a user...</a>
+        </div>
+        <OAuthButton provider="facebook">Register with Facebook</OAuthButton>
         <p>Already have an account?
           <Link to="/login">Login instead</Link>
         </p>
         <p>Are you an artist?
-          <a>Contact us to get an account...</a>
+          <Link to="/artist-register">Contact us to get an account...</Link>
         </p>
       </section>
     );

@@ -31,10 +31,12 @@ const userSchema = new Schema({
     index: true,
     unique: 'Seems like we already have an account with this email!' },
   passwordHash: {
-    type: String,
-    required: 'This field is required' },
+    type: String
+  },
   image: String,
   facebookId: String,
+  instagramId: String,
+  instaAccessToken: String,
   firstName: String,
   lastName: String,
   website: String,
@@ -46,8 +48,8 @@ const userSchema = new Schema({
   country: { type: Schema.ObjectId, ref: 'Country' },
   role: String,
   styles: [{ type: Schema.ObjectId, ref: 'Style' }],
-  locations: [studioEventSchema],
-  residentAt: { type: Schema.ObjectId, ref: 'StudioEvent' }
+  locations: [studioEventSchema]
+  // residentAt: { type: Schema.ObjectId, ref: 'StudioEvent' }
 });
 
 userSchema.plugin(require('mongoose-unique-validator'));
@@ -96,14 +98,16 @@ function setPasswordConfirmation(passwordConfirmation) {
 
 function validatePasswordHash() {
   if (this.isNew) {
-    if (!this._password) {
+    if (!this._password || !this.facebookId) {
       return this.invalidate('password', 'A password is required.');
     }
-    if (this._password.length < 2) {
-      this.invalidate('password', 'Password must be at least 2 characters.');
-    }
-    if (this._password !== this._passwordConfirmation) {
-      return this.invalidate('passwordConfirmation', 'Passwords do not match.');
+    if(!this.facebookId) {
+      if (this._password.length < 2) {
+        this.invalidate('password', 'Password must be at least 2 characters.');
+      }
+      if (this._password !== this._passwordConfirmation) {
+        return this.invalidate('passwordConfirmation', 'Passwords do not match.');
+      }
     }
   }
 }

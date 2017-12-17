@@ -19,6 +19,8 @@ router.route('/login')
 
 router.route('/oauth/facebook')
   .post(oauth.facebook);
+router.route('/oauth/instagram')
+  .post(oauth.instagram);
 
 router.route('/users')
   .get(users.index);
