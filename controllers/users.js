@@ -4,7 +4,7 @@ const Country = require('../models/Country');
 function usersIndex(req, res, next) {
   User
     .find()
-    .populate('residentAt locations.studioEvent residentAt.artists')
+    .populate('locations.studioEvent')
     .exec()
     .then(users => {
       if (!users) res.notFound();
@@ -14,18 +14,22 @@ function usersIndex(req, res, next) {
 }
 
 function artistsIndex(req, res, next) {
+  console.log('artists index');
   User
     .find({role: 'artist'})
-    .populate('residentAt locations.studioEvent country')
+    .populate('locations.studioEvent country')
     .exec()
-    .then(artists => res.status(200).json(artists))
+    .then(artists => {
+      console.log('got all the artists');
+      res.status(200).json(artists);
+    })
     .catch(next);
 }
 
 function usersShow(req, res, next) {
   User
     .findById(req.params.id)
-    .populate('residentAt locations.studioEvent')
+    .populate('locations.studioEvent')
     .exec()
     .then(users => {
       if (!users) res.notFound();
@@ -77,7 +81,7 @@ module.exports = {
   artistsIndex,
   show: usersShow,
   update: userUpdate
-}
+};
 
 // Imagine that you are adding locations:
 // When adding a studio, you check whether you're resident at this studio or not.

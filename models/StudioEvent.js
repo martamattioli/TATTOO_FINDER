@@ -57,7 +57,6 @@ function isDateInThePast() {
 }
 
 function calculateAverage() {
-  console.log(this.artists);
   if (this.artists && this.artists.length > 0) {
     let sum = 0;
     const averages = this.artists.map(artist => {

@@ -8,9 +8,9 @@ module.exports = {
     scope: 'user:email'
   },
   instagram: {
-    loginURL: 'https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code',
+    loginURL: `https://api.instagram.com/oauth/authorize/?client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri='http://localhost:8000/profile'&response_type=code`,
     accessTokenURL: 'https://api.instagram.com/oauth/access_token',
-    profileURL: '..',
+    profileURL: 'https://api.instagram.com/v1/users/self/?access_token=ACCESS-TOKEN',
     clientId: process.env.INSTAGRAM_CLIENT_ID,
     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
     scope: 'user:email'

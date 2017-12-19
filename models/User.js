@@ -35,8 +35,10 @@ const userSchema = new Schema({
   },
   image: String,
   facebookId: String,
-  instagramId: String,
+  instaId: String,
   instaAccessToken: String,
+  instaUsername: String,
+  instaProfilePic: String,
   firstName: String,
   lastName: String,
   website: String,
@@ -97,6 +99,7 @@ function setPasswordConfirmation(passwordConfirmation) {
 }
 
 function validatePasswordHash() {
+  console.log('validatePasswordHash', !this._password, !this.facebookId);
   if (this.isNew) {
     if (!this._password || !this.facebookId) {
       return this.invalidate('password', 'A password is required.');
@@ -138,6 +141,7 @@ function calculateAverage() {
 }
 
 function countRatings() {
+  console.log('yoooo');
   if (this.ratingsReviews.length > 0) {
     const count = this.ratingsReviews.map(rating => rating.rating);
     return count.length;

@@ -33,7 +33,7 @@ class Register extends React.Component {
 
   changeRole(role) {
     const user = Object.assign({}, this.state.user, { role });
-    this.setState({ user }, () => console.log(this.state.user));
+    this.setState({ user }, () => console.log('this state user', this.state.user));
   }
 
   handleSubmit(e) {
