@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const Country = require('../models/Country');
+const jwt = require('jsonwebtoken');
+const { secret } = require('../config/env');
 
 function usersIndex(req, res, next) {
   User
@@ -14,7 +16,6 @@ function usersIndex(req, res, next) {
 }
 
 function artistsIndex(req, res, next) {
-  console.log('artists index');
   User
     .find({role: 'artist'})
     .populate('locations.studioEvent country')
@@ -31,9 +32,21 @@ function usersShow(req, res, next) {
     .findById(req.params.id)
     .populate('locations.studioEvent')
     .exec()
-    .then(users => {
-      if (!users) res.notFound();
-      return res.status(200).json(users);
+    .then(user => {
+      if (!user) res.notFound();
+      return res.status(200).json(user);
+    })
+    .catch(next);
+}
+
+function artistsShow(req, res, next) {
+  User
+    .findById(req.params.id)
+    .populate('locations.studioEvent')
+    .exec()
+    .then(artist => {
+      if (!artist) res.notFound();
+      return res.status(200).json(artist);
     })
     .catch(next);
 }
@@ -76,9 +89,32 @@ function userUpdate(req, res, next) {
     .catch(next);
 }
 
+function artistsDisconnectInsta(req, res, next) {
+  console.log('in artistsDisconnectInsta');
+  User
+    .findById(req.params.id)
+    .exec()
+    .then(artist => {
+      if (!artist) res.notFound();
+      artist.instaId = null;
+      artist.instaAccessToken = null;
+      artist.instaUsername = null;
+      artist.instaProfilePic = null;
+
+      return artist.save();
+    })
+    .then(artist => {
+      const token = jwt.sign({ userId: artist.id }, secret, { expiresIn: '24h' });
+      return res.status(200).json({ message: 'Instagram disconnected', token, artist });
+    })
+    .catch(next);
+}
+
 module.exports = {
   index: usersIndex,
   artistsIndex,
+  artistsShow,
+  artistsDisconnectInsta,
   show: usersShow,
   update: userUpdate
 };

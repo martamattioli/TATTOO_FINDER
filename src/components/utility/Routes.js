@@ -10,7 +10,7 @@ import Login from '../auth/Login';
 import ArtistShow from '../artists/ArtistShow';
 import ArtistsIndex from '../artists/ArtistsIndex';
 
-import ProfileShow from '../statics/ProfileShow';
+import ProfileOptions from './ProfileOptions';
 
 const Routes = () => {
   return(
@@ -20,7 +20,7 @@ const Routes = () => {
       <Route path="/login" component={Login} />
       <Route exact path="/artists/:id" component={ArtistShow} />
       <Route path="/artists" component={ArtistsIndex} />
-      <Route path="/profile" component={ProfileShow} />
+      <Route path="/options" component={ProfileOptions} />
       <Route exact path="/" component={Home} />
     </Switch>
   );

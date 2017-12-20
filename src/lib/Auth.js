@@ -14,6 +14,13 @@ class Auth {
   static removeToken() {
     return localStorage.removeItem('token');
   }
+
+  static getPayload() {
+    const token = this.getToken();
+    if(!token) return null;
+
+    return JSON.parse(atob(token.split('.')[1])); 
+  }
 }
 
 export default Auth;

@@ -1,5 +1,5 @@
 import React from 'react';
-import InstaAuth from '../../lib/InstaAuth';
+// import InstaAuth from '../../lib/InstaAuth';
 import OAuth from '../../lib/OAuth';
 import queryString from 'query-string';
 import Axios from 'axios';
@@ -16,23 +16,21 @@ class OAuthButton extends React.Component {
     data.redirectUri = window.location.origin + window.location.pathname;
     Axios
       .post(this.provider.url, data, {
-        headers: { 'Authorization': Auth.getToken() }
+        headers: { 'Authorization': `Bearer ${Auth.getToken()}`}
       })
       .then(res => {
-        console.log('res', res);
-        InstaAuth.setAccessToken(res.data.access_token);
+        Auth.setToken(res.data.token);
         return res;
       })
       .then(res => {
-        console.log('removing provider');
         localStorage.removeItem('provider');
         return res;
       })
-      .then(res => {
-        console.log('replacing stuff');
-        this.props.history.replace(this.props.location.pathname);
-        return res;
-      })
+      // .then(res => {
+      //   console.log('this.props.location.pathname', this.props.location.pathname);
+      //   this.props.history.replace(this.props.location.pathname);
+      //   return res;
+      // })
       .then(res => this.props.history.push({
         pathname: `/artists/${Auth.getPayload().userId}`,
         state: { message: res.data.message }

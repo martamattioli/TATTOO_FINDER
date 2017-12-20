@@ -36,6 +36,12 @@ router.route('/users/:id/reviews')
 router.route('/artists')
   .get(users.artistsIndex);
 
+router.route('/artists/:id')
+  .get(users.artistsShow);
+
+router.route('/artists/:id/disconnectinsta')
+  .put(secureRoute, users.artistsDisconnectInsta);
+
 router.route('/styles')
   .get(styles.index)
   .post(styles.create);

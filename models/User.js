@@ -51,7 +51,6 @@ const userSchema = new Schema({
   role: String,
   styles: [{ type: Schema.ObjectId, ref: 'Style' }],
   locations: [studioEventSchema]
-  // residentAt: { type: Schema.ObjectId, ref: 'StudioEvent' }
 });
 
 userSchema.plugin(require('mongoose-unique-validator'));
@@ -99,7 +98,6 @@ function setPasswordConfirmation(passwordConfirmation) {
 }
 
 function validatePasswordHash() {
-  console.log('validatePasswordHash', !this._password, !this.facebookId);
   if (this.isNew) {
     if (!this._password || !this.facebookId) {
       return this.invalidate('password', 'A password is required.');
@@ -141,7 +139,6 @@ function calculateAverage() {
 }
 
 function countRatings() {
-  console.log('yoooo');
   if (this.ratingsReviews.length > 0) {
     const count = this.ratingsReviews.map(rating => rating.rating);
     return count.length;

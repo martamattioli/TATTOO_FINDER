@@ -25,8 +25,6 @@ class OAuth {
       response_type: provider.response_type
     };
 
-    console.log('querystring', queryString.stringify(qs));
-
     return `${provider.authEndpoint}?${queryString.stringify(qs)}`;
   }
 

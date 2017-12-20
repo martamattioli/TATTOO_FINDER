@@ -63,63 +63,63 @@ function facebook(req, res, next) {
 
 function instagram(req, res, next) {
   let instaToken;
-
-  rp({
-    method: 'POST',
-    url: 'https://api.instagram.com/oauth/access_token',
-    form: {
-      grant_type: 'authorization_code',
-      code: req.body.code,
-      client_id: oauth.instagram.clientId,
-      client_secret: oauth.instagram.clientSecret,
-      redirect_uri: req.body.redirectUri
-    },
-    json: true
-  })
-    .then(token => {
-      instaToken = `${token}`;
-      console.log('token!!!!', token);
-      return rp({
-        method: 'GET',
-        url: `https://api.instagram.com/v1/users/self/?access_token=${req.body.code}`,
-        qs: token,
-        json: true
-      });
+  console.log('THE CURRENT USER', req.currentUser);
+  if (req.currentUser.instaId) {
+    rp({
+      method: 'POST',
+      url: 'https://api.instagram.com/oauth/access_token',
+      form: {
+        grant_type: 'authorization_code',
+        code: req.body.code,
+        client_id: oauth.instagram.clientId,
+        client_secret: oauth.instagram.clientSecret,
+        redirect_uri: req.body.redirectUri
+      },
+      json: true
     })
-    .then(profile => {
-      console.log('profile!!', profile);
-      return User
-        .findById(req.currentUser.id)
-        .exec()
-        // .findOne({ $or: [{ email: profile.email }, { facebookId: profile.id }] })
-        .then(user => {
-          if (!user) {
-            res.status(404).json({message: 'Artist not found'});
-          }
-
-          console.log('the USERRRRR', user);
-          user.instaAccessToken = instaToken;
-          user.instaId = profile.id;
-          user.instaUsername = profile.username;
-          user.instaProfilePic = profile.profile_picture;
-          if (profile.website) user.website = profile.website;
-
-          return user.save();
+      .then(token => {
+        instaToken = token.access_token;
+        // console.log('token!!!!', token);
+        return rp({
+          method: 'GET',
+          url: `https://api.instagram.com/v1/users/self/?access_token=${req.body.code}`,
+          qs: token,
+          json: true
         });
-    })
-    .then(user => {
-      console.log(user,'!!!');
+      })
+      .then(profile => {
+        return User
+          .findById(req.currentUser.id)
+          .exec()
+          // .findOne({ $or: [{ email: profile.email }, { facebookId: profile.id }] })
+          .then(user => {
+            if (!user) {
+              res.status(404).json({message: 'Artist not found'});
+            }
 
-      // const payload = { userId: user.id };
-      // const token = jwt.sign(payload, secret, { expiresIn: '1hr' });
+            user.instaAccessToken = instaToken;
+            user.instaId = profile.data.id;
+            user.instaUsername = profile.data.username;
+            user.instaProfilePic = profile.data.profile_picture;
+            if (profile.website) user.website = profile.data.website;
 
-      return res.json({
-        access_token: user.instaAccessToken,
-        // token,
-        message: 'Your profile is now connected with Instagram'
-      });
-    })
-    .catch(next);
+            return user.save();
+          });
+      })
+      .then(user => {
+        const payload = { userId: user.id, access_token: user.instaAccessToken };
+        const token = jwt.sign(payload, secret, { expiresIn: '1hr' });
+
+        return res.json({
+          // access_token: user.instaAccessToken,
+          token,
+          message: 'Your profile is now connected with Instagram'
+        });
+      })
+      .catch(next);
+  } else {
+    console.log('in the else statement');
+  }
 }
 
 module.exports = {
