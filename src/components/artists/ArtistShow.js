@@ -1,5 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Axios from 'axios';
+
+import Insta from '../utility/Insta';
+import InstaMessage from '../elements/messages/InstaMessage';
 
 class ArtistShow extends React.Component {
   constructor() {
@@ -9,6 +13,7 @@ class ArtistShow extends React.Component {
       artist: null
     };
 
+    this.closeMsg = this.closeMsg.bind(this);
   }
 
   componentDidMount() {
@@ -27,35 +32,30 @@ class ArtistShow extends React.Component {
                 instaInfo
               });
 
-              this.setState({ artist }, () => console.log('state after getting insta data', this.state));
+              this.setState({ artist });
             }));
         });
       })
       .catch(err => console.log('err', err));
   }
 
+  closeMsg() {
+    this.props.history.push({ state: { message: null } });
+  }
+
   render() {
     if (!this.state.artist) return null;
     return (
       <section>
+        {this.props.location.state && this.props.location.state.message && <InstaMessage>{ this.props.location.state.message }
+          <Link to="/options">Back</Link>
+          <button onClick={this.closeMsg}>Close</button>
+        </InstaMessage>}
         <h1>{`${this.state.artist.username}'s profile`}</h1>
-        {this.state.artist.instaInfo && [
-          <h2 key={0}>Instagram Feed 
-            <span>{this.state.artist.instaInfo.followers} followers</span>,
-            <span>{this.state.artist.instaInfo.media} photos</span>
-          </h2>
-        ]}
-        { this.state.artist.instaStream && this.state.artist.instaStream.map(photo => {
-          const dateCreated = Date(photo.created_time);
-          return (
-            <div key={photo.id}>
-              <img className="insta-stream" src={photo.images.standard_resolution.url} />
-              <p>{photo.likes.count} likes</p>
-              <p>{dateCreated}</p>
-              {/* <a target="_blank" href={photo.link}></a> */}
-            </div>
-          );
-        })}
+        <h2>Instagram</h2>
+        { this.state.artist.instaInfo && <Insta
+          artist={this.state.artist}
+        />}
       </section>
 
     );

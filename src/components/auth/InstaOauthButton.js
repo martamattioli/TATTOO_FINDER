@@ -6,11 +6,9 @@ import Axios from 'axios';
 import Auth from '../../lib/Auth';
 import { withRouter } from 'react-router-dom';
 
-class OAuthButton extends React.Component {
+class InstaFeed extends React.Component {
   componentWillMount() {
-    // console.log('this props', this.props);
     this.provider = OAuth.getProvider(this.props.provider);
-    // console.log('this provider', this.provider);
     if(!this.props.location.search.match(/code/) || localStorage.getItem('provider') !== this.props.provider) return false;
     const data = queryString.parse(this.props.location.search);
     data.redirectUri = window.location.origin + window.location.pathname;
@@ -26,15 +24,12 @@ class OAuthButton extends React.Component {
         localStorage.removeItem('provider');
         return res;
       })
-      // .then(res => {
-      //   console.log('this.props.location.pathname', this.props.location.pathname);
-      //   this.props.history.replace(this.props.location.pathname);
-      //   return res;
-      // })
-      .then(res => this.props.history.push({
-        pathname: `/artists/${Auth.getPayload().userId}`,
-        state: { message: res.data.message }
-      }))
+      .then(res => {
+        this.props.history.push({
+          pathname: `/artists/${Auth.getPayload().userId}`,
+          state: { message: res.data.message }
+        });
+      })
       .catch(err => console.log(err));
   }
 
@@ -55,4 +50,4 @@ class OAuthButton extends React.Component {
   }
 }
 
-export default withRouter(OAuthButton);
+export default withRouter(InstaFeed);

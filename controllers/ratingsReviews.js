@@ -18,4 +18,4 @@ function userRatingCreate(req, res, next) {
 
 module.exports = {
   userRatingCreate
-}
+};

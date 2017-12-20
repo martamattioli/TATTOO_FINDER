@@ -63,8 +63,7 @@ function facebook(req, res, next) {
 
 function instagram(req, res, next) {
   let instaToken;
-  console.log('THE CURRENT USER', req.currentUser);
-  if (req.currentUser.instaId) {
+  if (!req.currentUser.instaId) {
     rp({
       method: 'POST',
       url: 'https://api.instagram.com/oauth/access_token',
@@ -91,7 +90,6 @@ function instagram(req, res, next) {
         return User
           .findById(req.currentUser.id)
           .exec()
-          // .findOne({ $or: [{ email: profile.email }, { facebookId: profile.id }] })
           .then(user => {
             if (!user) {
               res.status(404).json({message: 'Artist not found'});
@@ -113,7 +111,7 @@ function instagram(req, res, next) {
         return res.json({
           // access_token: user.instaAccessToken,
           token,
-          message: 'Your profile is now connected with Instagram'
+          message: 'Your profile is now connected with Instagram, check out how other people see your profile.'
         });
       })
       .catch(next);

@@ -4,8 +4,9 @@ import Axios from 'axios';
 
 import Auth from '../../lib/Auth';
 
-// import OAuthButton from '../auth/OAuthButton';
-import InstaFeed from './InstaFeed';
+import InstaOauthButton from '../auth/InstaOauthButton';
+import SuccessMessage from '../elements/messages/SuccessMessage';
+// import Insta from './Insta';
 
 class ProfileOptions extends React.Component {
   constructor() {
@@ -16,10 +17,11 @@ class ProfileOptions extends React.Component {
       isArtist: false,
       isInstaConnected: false
     };
+    this.disconnectInsta = this.disconnectInsta.bind(this);
+    this.closeMsg = this.closeMsg.bind(this);
   }
 
   componentDidMount() {
-    console.log(Auth.getPayload());
     Axios
       .get(`/api/users/${this.state.userId}`)
       .then(res => {
@@ -29,13 +31,25 @@ class ProfileOptions extends React.Component {
   }
 
   doChecks(res) {
-    console.log('in do checks');
     const isArtist = (res.data.role === 'artist') ? true : false;
     const isInstaConnected = res.data.instaAccessToken ? true : false;
-    // if (res.data.instaAccessToken)
     this.setState({ user: res.data, isArtist, isInstaConnected }, () => {
-      // Axios
-      //   .get(z)
+      // if (this.state.isInstaConnected) {
+      //   Axios.all([
+      //     Axios.get(`https://api.instagram.com/v1/users/self/?access_token=${Auth.getPayload().access_token}`),
+      //     Axios.get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${Auth.getPayload().access_token}`)
+      //   ])
+      //     .then(Axios.spread((artistInfo, artistPhotos) => {
+      //       console.log(artistInfo, artistPhotos);
+      //       const instaInfo = { followers: artistInfo.data.data.counts.followed_by, media: artistInfo.data.data.counts.media };
+      //       const user = Object.assign({}, this.state.user, {
+      //         instaStream: artistPhotos.data.data,
+      //         instaInfo
+      //       });
+      //
+      //       this.setState({ user }, () => console.log('IN PROFILE OPTIONS', this.state));
+      //     }));
+      // }
     });
   }
 
@@ -46,26 +60,50 @@ class ProfileOptions extends React.Component {
       })
       .then(res => {
         Auth.setToken(res.data.token);
-        this.doChecks(res);
+        this.setState({
+          user: res.data.artist,
+          message: res.data.message,
+          isArtist: true,
+          isInstaConnected: false
+        });
+        // this.doChecks(res);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('err', err));
+  }
+
+  closeMsg() {
+    setTimeout(() => {
+      this.setState({ message: null });
+    }, 2000);
   }
 
   render() {
     if (!this.state.user) return null;
+    if (this.state.message) this.closeMsg();
     return (
       <section>
+        {this.state.message && <SuccessMessage>
+          { this.state.message }
+        </SuccessMessage>}
         <h1>Manage your profile</h1>
-        <h2>Your info:</h2>
-        <h3>Personal Details:</h3>
-        <p>Username: {this.state.user.username}</p>
-        { Auth.isAuthenticated() && <Link to={`/artists/${this.state.userId}/edit`}>EDIT</Link>}
-        <h3>Photos:</h3>
-        { this.state.isArtist && !this.state.isInstaConnected && <InstaFeed provider="instagram">Connect with Instagram</InstaFeed>}
-        { this.state.isArtist && this.state.isInstaConnected && <div>
-          <p>Your profile is connected to Instagram</p>
-          <button onClick={this.disconnectInsta}>Disconnect from Instagram</button>
-        </div>}
+        <Link to={`/artists/${Auth.getPayload().userId}`}>Preview public profile</Link>
+        <h2>Personal Details:</h2>
+        <p>Username: { this.state.user.username }</p>
+        <p>Email: { this.state.user.email }</p>
+        { Auth.isAuthenticated() && <Link to={`/users/${ this.state.userId }/edit`}>EDIT</Link>}
+        <h2>Photos:</h2>
+        {/* { this.state.user.instaInfo && <Insta
+          artist={this.state.user}
+        />} */}
+        { this.state.isArtist && [
+          <div key={0}>
+            { !this.state.isInstaConnected && <InstaOauthButton provider="instagram">Connect with Instagram</InstaOauthButton> }
+            { this.state.isInstaConnected && <div>
+              <p>Your profile is connected to Instagram</p>
+              <button onClick={ this.disconnectInsta }>Disconnect from Instagram</button>
+            </div>}
+          </div>
+        ]}
       </section>
     );
   }

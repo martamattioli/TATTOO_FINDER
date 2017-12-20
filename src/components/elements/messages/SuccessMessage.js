@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-const WelcomeMessage = styled.p`
+const SuccessMessage = styled.p`
   padding: 5px;
   border: solid 2px black;
   background: green;
@@ -9,4 +9,4 @@ const WelcomeMessage = styled.p`
   margin: 10px;
 `;
 
-export default WelcomeMessage;
+export default SuccessMessage;

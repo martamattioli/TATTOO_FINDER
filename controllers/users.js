@@ -21,7 +21,6 @@ function artistsIndex(req, res, next) {
     .populate('locations.studioEvent country')
     .exec()
     .then(artists => {
-      console.log('got all the artists');
       res.status(200).json(artists);
     })
     .catch(next);
