@@ -8,7 +8,7 @@ import InstaOauthButton from '../auth/InstaOauthButton';
 import SuccessMessage from '../elements/messages/SuccessMessage';
 // import Insta from './Insta';
 
-class ProfileOptions extends React.Component {
+class ArtistProfile extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -109,4 +109,4 @@ class ProfileOptions extends React.Component {
   }
 }
 
-export default ProfileOptions;
+export default ArtistProfile;

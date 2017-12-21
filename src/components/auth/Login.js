@@ -38,10 +38,14 @@ class Login extends React.Component {
       .post('/api/login', this.state.user)
       .then(res => {
         Auth.setToken(res.data.token);
-        this.props.history.push({
-          pathname: '/',
-          state: { message: res.data.message }
-        });
+        if (res.data.user.role === 'artist') {
+          this.props.history.push('/options');
+        } else {
+          this.props.history.push({
+            pathname: '/',
+            state: { message: res.data.message }
+          });
+        }
       })
       .catch(err => {
         this.setState({ errors: err.response.data});

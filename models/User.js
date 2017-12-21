@@ -80,6 +80,10 @@ userSchema
   .virtual('countRatings')
   .get(countRatings);
 
+userSchema
+  .virtual('percentageComplete')
+  .get(percentageComplete);
+
 // userSchema
 //   .path('username')
 //   .validate(validateUsername);
@@ -150,6 +154,19 @@ function countRatings() {
 function isDateInThePast() {
   if (this.endDate) return this.endDate.getDate() < (new Date()).getDate();
   // return null;
+}
+
+function percentageComplete() {
+  const array = ['image', 'username', 'email', 'instaId', 'website', 'styles', 'locations'];
+  let count = 0;
+  const sum = 7;
+
+  array.map(item => {
+    if (!Array.isArray(this[item]) && this[item]) count += 1;
+    if (Array.isArray(this[item]) && this[item].length > 0) count += 1;
+  });
+
+  return Math.floor((count/sum) * 100);
 }
 
 
