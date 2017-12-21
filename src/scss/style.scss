@@ -1,3 +1,18 @@
 @import 'helpers/mixins';
+@import 'helpers/variables';
 
 @import 'components/images';
+
+p {
+  margin: 0;
+}
+
+// ************** ARTIST SHOW  PERCENTAGE COMPLETE BAR **************** //
+.percent-p {
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.percent-right {
+  text-align: right;
+}

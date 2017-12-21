@@ -39,7 +39,7 @@ class Login extends React.Component {
       .then(res => {
         Auth.setToken(res.data.token);
         if (res.data.user.role === 'artist') {
-          this.props.history.push('/options');
+          this.props.history.push('/my-profile');
         } else {
           this.props.history.push({
             pathname: '/',

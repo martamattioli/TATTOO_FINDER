@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
-const ErrorMessage = styled.p`
+const Button = styled.p`
   padding: 5px;
-  color: red;
+  background-color: red;
   -webkit-transition: all .5s linear;
 `;
 
-export default ErrorMessage;
+export default Button;

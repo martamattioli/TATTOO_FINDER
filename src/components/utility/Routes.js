@@ -10,7 +10,7 @@ import Login from '../auth/Login';
 import ArtistShow from '../artists/ArtistShow';
 import ArtistsIndex from '../artists/ArtistsIndex';
 
-import ArtistProfile from './ArtistProfile';
+import ArtistProfile from '../artistprofile/ArtistProfile';
 
 const Routes = () => {
   return(

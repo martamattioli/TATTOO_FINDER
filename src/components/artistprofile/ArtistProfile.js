@@ -4,6 +4,9 @@ import Axios from 'axios';
 
 import Auth from '../../lib/Auth';
 
+import PercentageComplete from './PercentComplete';
+import ProfilePic from './ProfilePic';
+
 import InstaOauthButton from '../auth/InstaOauthButton';
 import SuccessMessage from '../elements/messages/SuccessMessage';
 // import Insta from './Insta';
@@ -85,12 +88,15 @@ class ArtistProfile extends React.Component {
         {this.state.message && <SuccessMessage>
           { this.state.message }
         </SuccessMessage>}
-        <h1>Manage your profile</h1>
-        <Link to={`/artists/${Auth.getPayload().userId}`}>Preview public profile</Link>
-        <h2>Personal Details:</h2>
-        <p>Username: { this.state.user.username }</p>
+        <PercentageComplete
+          percent={this.state.user.percentageComplete}
+          artistId={this.state.user.id}
+        />
+        <ProfilePic
+          picture={this.state.user.image}
+        />
+        <p>{ this.state.user.username }</p>
         <p>Email: { this.state.user.email }</p>
-        { Auth.isAuthenticated() && <Link to={`/users/${ this.state.userId }/edit`}>EDIT</Link>}
         <h2>Photos:</h2>
         {/* { this.state.user.instaInfo && <Insta
           artist={this.state.user}
