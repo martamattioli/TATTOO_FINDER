@@ -6,7 +6,8 @@ const SassVariables = {
     black: '#333',
     white: '#fff',
     red: 'red',
-    green: 'green'
+    green: 'green',
+    lightBlue: '#22A7F0'
   }
 };
 

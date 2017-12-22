@@ -19,7 +19,7 @@ class App extends React.Component {
     return(
       <ThemeProvider theme={ theme }>
         <Router>
-          <div className="container-fluid">
+          <div>
             <Navbar
               logout={this.logout}
             />

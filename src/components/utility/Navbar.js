@@ -22,7 +22,7 @@ const Navbar = ({ history }) => {
       {' '}
       { Auth.isAuthenticated() && <a href="#" onClick={logout}>Logout</a>}
       {' '}
-      { Auth.isAuthenticated() && <Link key={3} to="/my-profile">Manage profile</Link>}
+      { Auth.isAuthenticated() && Auth.getPayload().role === 'artist' && <Link key={3} to="/my-profile">Manage profile</Link>}
     </header>
   );
 };

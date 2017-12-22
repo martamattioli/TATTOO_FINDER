@@ -7,7 +7,9 @@ import Button from '../elements/buttons/Button';
 
 const PercentageComplete = ({ percent, artistId }) => {
   return (
-    <RoundedDiv>
+    <RoundedDiv
+      margin="30px 0"
+    >
       <Grid fluid>
         <Row>
           <Col sm={6} md={6}>

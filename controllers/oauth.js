@@ -49,7 +49,7 @@ function facebook(req, res, next) {
     })
     .then(user => {
       // console.log(user);
-      const payload = { userId: user.id };
+      const payload = { userId: user.id, role: user.role };
       const token = jwt.sign(payload, secret, { expiresIn: '1hr' });
 
       return res.json({
@@ -105,7 +105,7 @@ function instagram(req, res, next) {
           });
       })
       .then(user => {
-        const payload = { userId: user.id, access_token: user.instaAccessToken };
+        const payload = { userId: user.id, access_token: user.instaAccessToken, role: user.role };
         const token = jwt.sign(payload, secret, { expiresIn: '1hr' });
 
         return res.json({

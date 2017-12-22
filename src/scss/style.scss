@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
 @import 'helpers/mixins';
 @import 'helpers/variables';
 
 @import 'components/images';
+@import 'components/multiselect';
+
+body {
+  font-family: "Quicksand", sans-serif;
+}
 
 p {
+  margin: 0;
+}
+
+h2 {
   margin: 0;
 }
 

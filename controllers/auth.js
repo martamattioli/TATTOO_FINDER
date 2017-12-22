@@ -17,7 +17,7 @@ function register(req, res, next) {
         .create(req.body);
     })
     .then(user => {
-      const token = jwt.sign({ userId: user.id }, secret, { expiresIn: '24h' });
+      const token = jwt.sign({ userId: user.id, role: user.role }, secret, { expiresIn: '24h' });
       return res.json({ message: `Welcome ${user.username}`, token, user });
     })
     .catch(next);
@@ -30,7 +30,7 @@ function login(req, res, next) {
     .then(user => {
       if (!user || !user.validatePassword(req.body.password)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
       const accessToken = user.instaAccessToken ? user.instaAccessToken : null;
-      const token = jwt.sign({ userId: user.id, access_token: accessToken }, secret, { expiresIn: '1hr' });
+      const token = jwt.sign({ userId: user.id, access_token: accessToken, role: user.role }, secret, { expiresIn: '1hr' });
 
       return res.json({ message: `Welcome ${user.username}`, token, user });
     })

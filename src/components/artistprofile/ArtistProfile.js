@@ -2,15 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
+import { Grid, Row, Col } from 'react-bootstrap';
+
 import Auth from '../../lib/Auth';
 
 import PercentageComplete from './PercentComplete';
 import ProfilePic from './ProfilePic';
 
 import Icon from '../elements/icons/Icon';
+import Card from '../elements/divs/Card';
+import ColoredSection from '../elements/divs/ColoredSection';
+import RoundedDiv from '../elements/divs/RoundedDiv';
+import Message from '../elements/messages/Message';
+import ActualButton from '../elements/buttons/ActualButton';
 
 import InstaOauthButton from '../auth/InstaOauthButton';
-import Message from '../elements/messages/Message';
 
 class ArtistProfile extends React.Component {
   constructor() {
@@ -70,7 +76,6 @@ class ArtistProfile extends React.Component {
           isArtist: true,
           isInstaConnected: false
         });
-        // this.doChecks(res);
       })
       .catch(err => console.log('err', err));
   }
@@ -94,13 +99,16 @@ class ArtistProfile extends React.Component {
         >
           { this.state.message }
         </Message>}
-        <PercentageComplete
-          percent={this.state.user.percentageComplete}
-          artistId={this.state.user.id}
-        />
-        <div style={{textAlign: 'center'}}>
+        <Grid fluid>
+          <PercentageComplete
+            percent={this.state.user.percentageComplete}
+            artistId={this.state.user.id}
+          />
+        </Grid>
+        <div style={{textAlign: 'center', margin: '40px 0 50px 0'}}>
           <ProfilePic
             picture={this.state.user.image}
+            isClaimed={true}
           />
           {this.state.user.image && <Icon
             className="fa fa-pencil-alt"
@@ -113,7 +121,19 @@ class ArtistProfile extends React.Component {
             aria-hidden="true"
             fontSize="20px"
             hover={true}
-          /></h1>
+          />
+          <RoundedDiv
+            display="inline-block"
+            fontSize="18px"
+            margin="0 0 0 20px"
+          ><Icon
+              className="fas fa-star"
+              fontSize="15px"
+              addMarginRight="5px"
+            />{ this.state.user.averageRatings === 0 && <span>n/a</span> ||
+              <span>{ this.state.user.averageRatings }</span>}
+          </RoundedDiv>
+          </h1>
           <h3>
             <span>
               <Icon
@@ -145,19 +165,64 @@ class ArtistProfile extends React.Component {
                 /></span>}
             </span>
           </h3>
+          { this.state.user.styles.length === 0 && <h3>
+            Add styles <Icon
+              className="fas fa-plus"
+              fontSize="10px"
+              hover={true}
+            />
+          </h3> || <div>{this.state.user.styles.map(style => <span key={style.id}>
+              {style.name}
+            </span>)}</div>}
         </div>
-        <h2>Photos:</h2>
+        <ColoredSection
+          background="darkGrey"
+        >
+          <Grid fluid>
+            <h2 style={{marginBottom: '20px'}}>Working at:</h2>
+            <Row>
+              { this.state.user.locations.length > 0 && <Col md={4}>
+                { this.state.user.locations.map(location => <div key={location.id}>
+                  <p>{location.id}</p>
+                </div>)}
+              </Col>}
+              <Col md={4}>
+                { (this.state.user.locations.length === 0) && <Card
+                  border="solid 4px black"
+                  radius="4px"
+                  hoverColor="darkerGrey"
+                  align="center"
+                ><Icon
+                    className="fas fa-plus"
+                    fontSize="30px"
+                    centerPosition={true}
+                  /></Card>}
+              </Col>
+            </Row>
+          </Grid>
+        </ColoredSection>
         {/* { this.state.user.instaInfo && <Insta
           artist={this.state.user}
         />} */}
         { this.state.isArtist && [
-          <div key={0}>
-            { !this.state.isInstaConnected && <InstaOauthButton provider="instagram">Connect with Instagram</InstaOauthButton> }
-            { this.state.isInstaConnected && <div>
-              <p>Your profile is connected to Instagram</p>
-              <button onClick={ this.disconnectInsta }>Disconnect from Instagram</button>
-            </div>}
-          </div>
+          <ColoredSection
+            key={0}
+            background="lightGrey"
+          >
+            { this.state.isInstaConnected && <Grid fluid>
+              <Row>
+                <Col md={6}>
+                  <h2>INSTAGRAM FEED</h2>
+                </Col>
+                <Col md={6} style={{textAlign: 'right'}}>
+                  <ActualButton
+                    onClick={ this.disconnectInsta }
+                    background="white"
+                  >Disconnect from Instagram</ActualButton>
+                </Col>
+              </Row>
+            </Grid> || <InstaOauthButton provider="instagram">Connect to Instagram</InstaOauthButton>}
+          </ColoredSection>
         ]}
       </section>
     );
