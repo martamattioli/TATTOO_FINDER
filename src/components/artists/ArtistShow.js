@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
 import Insta from '../utility/Insta';
-import InstaMessage from '../elements/messages/InstaMessage';
+import Message from '../elements/messages/Message';
 
 class ArtistShow extends React.Component {
   constructor() {
@@ -47,10 +47,14 @@ class ArtistShow extends React.Component {
     if (!this.state.artist) return null;
     return (
       <section>
-        {this.props.location.state && this.props.location.state.message && <InstaMessage>{ this.props.location.state.message }
+        {this.props.location.state && this.props.location.state.message && <Message
+          border="solid 2px black"
+          radius="4px"
+          margin="10px"
+        >{ this.props.location.state.message }
           <Link to="/options">Back</Link>
           <button onClick={this.closeMsg}>Close</button>
-        </InstaMessage>}
+        </Message>}
         <h1>{`${this.state.artist.username}'s profile`}</h1>
         <h2>Instagram</h2>
         { this.state.artist.instaInfo && <Insta

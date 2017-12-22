@@ -3,7 +3,10 @@ const SassVariables = {
     lightGrey: '#DFEDED',
     darkGrey: '#aed1d1',
     darkerGrey: '#7db6b6',
-    black: 'black'
+    black: '#333',
+    white: '#fff',
+    red: 'red',
+    green: 'green'
   }
 };
 

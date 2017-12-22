@@ -7,9 +7,10 @@ import Auth from '../../lib/Auth';
 import PercentageComplete from './PercentComplete';
 import ProfilePic from './ProfilePic';
 
+import Icon from '../elements/icons/Icon';
+
 import InstaOauthButton from '../auth/InstaOauthButton';
-import SuccessMessage from '../elements/messages/SuccessMessage';
-// import Insta from './Insta';
+import Message from '../elements/messages/Message';
 
 class ArtistProfile extends React.Component {
   constructor() {
@@ -85,18 +86,66 @@ class ArtistProfile extends React.Component {
     if (this.state.message) this.closeMsg();
     return (
       <section>
-        {this.state.message && <SuccessMessage>
+        {this.state.message && <Message
+          background="green"
+          border="solid 2px black"
+          color="white"
+          radius="4px"
+        >
           { this.state.message }
-        </SuccessMessage>}
+        </Message>}
         <PercentageComplete
           percent={this.state.user.percentageComplete}
           artistId={this.state.user.id}
         />
-        <ProfilePic
-          picture={this.state.user.image}
-        />
-        <p>{ this.state.user.username }</p>
-        <p>Email: { this.state.user.email }</p>
+        <div style={{textAlign: 'center'}}>
+          <ProfilePic
+            picture={this.state.user.image}
+          />
+          {this.state.user.image && <Icon
+            className="fa fa-pencil-alt"
+            aria-hidden="true"
+            fontSize="20px"
+            hover={true}
+          />}
+          <h1>{ this.state.user.username } <Icon
+            className="fa fa-pencil-alt"
+            aria-hidden="true"
+            fontSize="20px"
+            hover={true}
+          /></h1>
+          <h3>
+            <span>
+              <Icon
+                className="far fa-envelope"
+              /> { this.state.user.email } <Icon
+                className="fa fa-pencil-alt"
+                aria-hidden="true"
+                fontSize="10px"
+                hover={true}
+              /></span>
+            {' '}
+            <span>
+              <Icon
+                className="fas fa-external-link-alt"
+                fontSize="84%"
+                addMarginLeft="20px"
+              /> { this.state.user.website &&
+                <span>{ this.state.user.website } <Icon
+                  className="fa fa-pencil-alt"
+                  aria-hidden="true"
+                  fontSize="10px"
+                  hover={true}
+                /></span> ||
+                <span>Add your website <Icon
+                  className="fas fa-plus"
+                  aria-hidden="true"
+                  fontSize="10px"
+                  hover={true}
+                /></span>}
+            </span>
+          </h3>
+        </div>
         <h2>Photos:</h2>
         {/* { this.state.user.instaInfo && <Insta
           artist={this.state.user}

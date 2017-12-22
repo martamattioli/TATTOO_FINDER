@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import SuccessMessage from '../elements/messages/SuccessMessage';
+import Message from '../elements/messages/Message';
 
 const Home = (props) => {
   if (props.location.state && props.location.state.message) {
@@ -12,7 +12,12 @@ const Home = (props) => {
 
   return(
     <section>
-      {props.location.state && props.location.state.message && <SuccessMessage>{ props.location.state.message }</SuccessMessage>}
+      {props.location.state && props.location.state.message && <Message
+        background="green"
+        color="white"
+        border="solid 2px black"
+        radius="4px"
+      >{ props.location.state.message }</Message>}
       <h1>Tattoo Finder</h1>
       <h2>Search for...</h2>
       <ul>

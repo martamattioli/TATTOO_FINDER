@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Circle from '../elements/divs/Circle';
-import UploadIcon from '../elements/icons/UploadIcon';
+import Icon from '../elements/icons/Icon';
 
 const ProfilePic = ({ picture }) => {
   const size = 170;
@@ -12,11 +12,13 @@ const ProfilePic = ({ picture }) => {
       width={`${size}px`}
       height={`${size}px`}
     >
-      {!picture && <UploadIcon
+      {!picture && <Icon
         className="fa fa-upload"
         aria-hidden="true"
         fontSize="50px"
-      ></UploadIcon>}
+        color="white"
+        centerPosition={true}
+      ></Icon>}
     </Circle>
   );
 };

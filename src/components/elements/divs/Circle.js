@@ -11,6 +11,7 @@ const Circle = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  display: inline-block;
 `;
 
 export default Circle;

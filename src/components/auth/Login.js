@@ -7,7 +7,7 @@ import Auth from '../../lib/Auth';
 import UserLoginForm from './UserLoginForm';
 
 import OAuthButton from './OAuthButton';
-import ErrorMessage from '../elements/messages/ErrorMessage';
+import Message from '../elements/messages/Message';
 
 class Login extends React.Component {
   constructor() {
@@ -62,7 +62,10 @@ class Login extends React.Component {
     return (
       <section>
         <h1>LOGIN</h1>
-        { this.state.errors && <ErrorMessage>{ this.state.errors.message }</ErrorMessage>}
+        { this.state.errors && <Message
+          background="red"
+          color="white"
+        >{ this.state.errors.message }</Message>}
         <UserLoginForm
           user={this.state.user}
           handleChange={this.handleChange}
