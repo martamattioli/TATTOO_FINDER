@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const { secret } = require('../config/env');
 
 function facebook(req, res, next) {
-  console.log('in facebook');
   return rp({
     method: 'POST',
     url: oauth.facebook.accessTokenURL,

@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 const Button = styled.button`
   display: inline-block;
   border: none;
-  padding: 5px;
+  padding: ${props => props.padding || '5px'};
   margin: 5px 0px;
-  border-radius: 4px;
+  border-radius: ${props => props.radius || '4px'};
   background-color: ${ props => props.theme.colors[props.background] };
   color: ${props => props.theme.colors.black };
   transition: all linear 0.3s;

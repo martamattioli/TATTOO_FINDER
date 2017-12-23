@@ -13,10 +13,16 @@ import Icon from '../elements/icons/Icon';
 import Card from '../elements/divs/Card';
 import ColoredSection from '../elements/divs/ColoredSection';
 import RoundedDiv from '../elements/divs/RoundedDiv';
+import ModalBackground from '../elements/divs/ModalBackground';
 import Message from '../elements/messages/Message';
 import ActualButton from '../elements/buttons/ActualButton';
+import Button from '../elements/buttons/Button';
 
 import InstaOauthButton from '../auth/InstaOauthButton';
+
+import UserForm from './UserForm';
+import StylesForm from '../styles/StylesForm';
+import AddStudio from '../studios/AddStudio';
 
 class ArtistProfile extends React.Component {
   constructor() {
@@ -25,25 +31,43 @@ class ArtistProfile extends React.Component {
       userId: Auth.getPayload().userId,
       user: null,
       isArtist: false,
-      isInstaConnected: false
+      isInstaConnected: false,
+      field: null,
+      showStylesForm: false,
+      showUserForm: false,
+      showStudioForm: false
     };
+    this.fetchArtist = this.fetchArtist.bind(this);
     this.disconnectInsta = this.disconnectInsta.bind(this);
     this.closeMsg = this.closeMsg.bind(this);
+    this.showForm = this.showForm.bind(this);
   }
 
   componentDidMount() {
+    this.fetchArtist(false);
+  }
+
+  fetchArtist(showHide) {
     Axios
       .get(`/api/users/${this.state.userId}`)
       .then(res => {
-        this.doChecks(res);
+        this.doChecks(res, showHide);
       })
       .catch(err => console.log(err));
   }
 
-  doChecks(res) {
+  doChecks(res, showHide) {
+    console.log(res.data);
     const isArtist = (res.data.role === 'artist') ? true : false;
     const isInstaConnected = res.data.instaAccessToken ? true : false;
-    this.setState({ user: res.data, isArtist, isInstaConnected }, () => {
+    this.setState({
+      user: res.data,
+      isArtist,
+      isInstaConnected,
+      showStylesForm: showHide,
+      showUserForm: showHide,
+      showStudioForm: showHide
+    }, () => {
       // if (this.state.isInstaConnected) {
       //   Axios.all([
       //     Axios.get(`https://api.instagram.com/v1/users/self/?access_token=${Auth.getPayload().access_token}`),
@@ -86,11 +110,31 @@ class ArtistProfile extends React.Component {
     }, 2000);
   }
 
+  showForm(form, fieldToShow) {
+    const showHide = !this.state[form];
+    this.setState({[form]: showHide, field: fieldToShow});
+  }
+
   render() {
     if (!this.state.user) return null;
     if (this.state.message) this.closeMsg();
     return (
       <section>
+        { (this.state.showUserForm || this.state.showStudioForm) && <ModalBackground>
+          { this.state.showUserForm && <UserForm
+            user={this.state.user}
+            field={this.state.field}
+            fetchArtist={this.fetchArtist}
+            showForm={this.showForm}
+          />}
+          { this.state.showStudioForm && <AddStudio
+            showForm={this.showForm}
+            userId={this.state.user.id}
+            fetchArtist={this.fetchArtist}
+            locations={this.state.user.locations}
+          />}
+        </ModalBackground>}
+
         {this.state.message && <Message
           background="green"
           border="solid 2px black"
@@ -116,12 +160,15 @@ class ArtistProfile extends React.Component {
             fontSize="20px"
             hover={true}
           />}
-          <h1>{ this.state.user.username } <Icon
-            className="fa fa-pencil-alt"
-            aria-hidden="true"
-            fontSize="20px"
-            hover={true}
-          />
+          <h1>{ this.state.user.username } <ActualButton
+            onClick={() => this.showForm('showUserForm', 'username')}
+          ><Icon
+              className="fa fa-pencil-alt"
+              aria-hidden="true"
+              fontSize="20px"
+              hover={true}
+            />
+          </ActualButton>
           <RoundedDiv
             display="inline-block"
             fontSize="18px"
@@ -138,42 +185,84 @@ class ArtistProfile extends React.Component {
             <span>
               <Icon
                 className="far fa-envelope"
-              /> { this.state.user.email } <Icon
-                className="fa fa-pencil-alt"
-                aria-hidden="true"
-                fontSize="10px"
-                hover={true}
-              /></span>
+              /> { this.state.user.email } <ActualButton
+                onClick={() => this.showForm('showUserForm', 'email')}
+              ><Icon
+                  className="fa fa-pencil-alt"
+                  aria-hidden="true"
+                  fontSize="10px"
+                  hover={true}
+                />
+              </ActualButton></span>
             {' '}
             <span>
               <Icon
                 className="fas fa-external-link-alt"
                 fontSize="84%"
                 addMarginLeft="20px"
-              /> { this.state.user.website &&
-                <span>{ this.state.user.website } <Icon
-                  className="fa fa-pencil-alt"
-                  aria-hidden="true"
-                  fontSize="10px"
-                  hover={true}
-                /></span> ||
-                <span>Add your website <Icon
+              /> { !this.state.showUserForm && <span>
+                { this.state.user.website &&
+                  <span>{ this.state.user.website } <ActualButton
+                    onClick={() => this.showForm('showUserForm', 'website')}
+                  ><Icon
+                      className="fa fa-pencil-alt"
+                      aria-hidden="true"
+                      fontSize="10px"
+                      hover={true}
+                    />
+                  </ActualButton></span> ||
+                  <span>Add your website <ActualButton
+                    onClick={() => this.showForm('showUserForm', 'website')}
+                  ><Icon
+                      className="fas fa-plus"
+                      aria-hidden="true"
+                      fontSize="10px"
+                      hover={true}
+                    />
+                  </ActualButton>
+                  </span>}
+              </span>}
+            </span>
+          </h3>
+          { !this.state.showStylesForm && <div>
+            { this.state.user.styles.length === 0 && <h3>
+            Add styles <ActualButton
+                onClick={() => this.showForm('showStylesForm')}
+                radius="50%"
+                padding="0px 11px 7px 11px"
+              ><Icon
                   className="fas fa-plus"
                   aria-hidden="true"
                   fontSize="10px"
                   hover={true}
-                /></span>}
-            </span>
-          </h3>
-          { this.state.user.styles.length === 0 && <h3>
-            Add styles <Icon
-              className="fas fa-plus"
-              fontSize="10px"
-              hover={true}
-            />
-          </h3> || <div>{this.state.user.styles.map(style => <span key={style.id}>
-              {style.name}
-            </span>)}</div>}
+                />
+              </ActualButton>
+            </h3> || <div>
+                {this.state.user.styles.map(style => <Button
+                  key={style.id}
+                  to={`/styles/${style.id}`}
+                  background="black"
+                  color="white"
+                  margin="0 5px"
+                >
+                  {style.name}
+                </Button>)} <ActualButton
+                  onClick={() => this.showForm('showStylesForm')}
+                  radius="50%"
+                  padding="5px 6px 1px 6px"
+                ><Icon
+                    className="fa fa-pencil-alt"
+                    aria-hidden="true"
+                    fontSize="10px"
+                    hover={true}
+                  /></ActualButton>
+              </div>}
+          </div>}
+          { this.state.showStylesForm && <StylesForm
+            artist={this.state.user}
+            fetchArtist={this.fetchArtist}
+            showForm={this.showForm}
+          />}
         </div>
         <ColoredSection
           background="darkGrey"
@@ -181,22 +270,33 @@ class ArtistProfile extends React.Component {
           <Grid fluid>
             <h2 style={{marginBottom: '20px'}}>Working at:</h2>
             <Row>
-              { this.state.user.locations.length > 0 && <Col md={4}>
-                { this.state.user.locations.map(location => <div key={location.id}>
-                  <p>{location.id}</p>
-                </div>)}
-              </Col>}
+              { this.state.user.locations.map(location => <Col md={4} key={location.id}>
+                <Link to={`/studios/${location.studioEvent.id}`}>
+                  <Card
+                    border="solid 4px black"
+                    radius="4px"
+                    hoverColor="darkerGrey"
+                    align="center"
+                    // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
+                  >
+                    <p>{location.studioEvent.name}</p>
+                    { location.resident && <p>Resident</p>}
+                  </Card>
+                </Link>
+              </Col>
+              )}
               <Col md={4}>
-                { (this.state.user.locations.length === 0) && <Card
+                <Card
                   border="solid 4px black"
                   radius="4px"
                   hoverColor="darkerGrey"
                   align="center"
+                  onClick={() => this.showForm('showStudioForm')}
                 ><Icon
                     className="fas fa-plus"
                     fontSize="30px"
                     centerPosition={true}
-                  /></Card>}
+                  /></Card>
               </Col>
             </Row>
           </Grid>
@@ -211,10 +311,10 @@ class ArtistProfile extends React.Component {
           >
             { this.state.isInstaConnected && <Grid fluid>
               <Row>
-                <Col md={6}>
+                <Col sm={6}>
                   <h2>INSTAGRAM FEED</h2>
                 </Col>
-                <Col md={6} style={{textAlign: 'right'}}>
+                <Col sm={6} style={{textAlign: 'right'}}>
                   <ActualButton
                     onClick={ this.disconnectInsta }
                     background="white"

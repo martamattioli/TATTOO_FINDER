@@ -29,7 +29,7 @@ function artistsIndex(req, res, next) {
 function usersShow(req, res, next) {
   User
     .findById(req.params.id)
-    .populate('locations.studioEvent')
+    .populate('styles locations.studioEvent')
     .exec()
     .then(user => {
       if (!user) res.notFound();
@@ -41,7 +41,7 @@ function usersShow(req, res, next) {
 function artistsShow(req, res, next) {
   User
     .findById(req.params.id)
-    .populate('locations.studioEvent')
+    .populate('styles locations.studioEvent')
     .exec()
     .then(artist => {
       if (!artist) res.notFound();
@@ -62,22 +62,6 @@ function userUpdate(req, res, next) {
         .findById(req.params.id);
     })
     .then(user => {
-      // if (req.body.locations) {
-      //   let countResidentRepetitions = 0;
-      //   const locations = req.body.locations.map(location => {
-      //     if (location.resident) countResidentRepetitions++;
-      //     return location.resident;
-      //   });
-      //
-      //   if (countResidentRepetitions > 1) {
-      //     const firstResidentFound = req.body.locations.find(location => location.resident);
-      //     req.body.locations[req.body.locations.indexOf(firstResidentFound)].resident = false;
-      //   }
-      //
-      //   const resident = req.body.locations.find(location => location.resident);
-      //   if (resident) user.residentAt = resident.studioEvent;
-      // }
-
       for (const field in req.body) {
         user[field] = req.body[field];
       }
@@ -88,8 +72,22 @@ function userUpdate(req, res, next) {
     .catch(next);
 }
 
+function artistAddLocation(req, res, next) {
+  User
+    .findById(req.params.id)
+    .exec()
+    .then(user => {
+      console.log(user);
+      if (!user) return res.notFound();
+      user.locations.push(req.body);
+
+      return user.save();
+    })
+    .then(user => res.status(200).json({user}))
+    .catch(next);
+}
+
 function artistsDisconnectInsta(req, res, next) {
-  console.log('in artistsDisconnectInsta');
   User
     .findById(req.params.id)
     .exec()
@@ -115,7 +113,8 @@ module.exports = {
   artistsShow,
   artistsDisconnectInsta,
   show: usersShow,
-  update: userUpdate
+  update: userUpdate,
+  artistAddLocation
 };
 
 // Imagine that you are adding locations:

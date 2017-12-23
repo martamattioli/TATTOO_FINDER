@@ -3,6 +3,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 const MultiSelect = ({ value, styles, removeSelected, handleSelectChange, stayOpen }) => {
+  console.log(styles);
   return (
     <Select
       name="form-field-name"
@@ -13,7 +14,6 @@ const MultiSelect = ({ value, styles, removeSelected, handleSelectChange, stayOp
       removeSelected={removeSelected}
       multi
       matchPos="start"
-      simpleValue
       value={value}
     />
   );

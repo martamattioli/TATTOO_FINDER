@@ -12,10 +12,10 @@ const PercentageComplete = ({ percent, artistId }) => {
     >
       <Grid fluid>
         <Row>
-          <Col sm={6} md={6}>
+          <Col xs={6} sm={6} md={6}>
             <p className="percent-p">{percent}% profile completed</p>
           </Col>
-          <Col sm={6} md={6} className="percent-right">
+          <Col xs={6} sm={6} md={6} className="percent-right">
             <Button to={`/artists/${artistId}`}>Preview your profile</Button>
           </Col>
         </Row>

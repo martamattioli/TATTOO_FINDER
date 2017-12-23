@@ -42,6 +42,9 @@ router.route('/artists/:id')
 router.route('/artists/:id/disconnectinsta')
   .put(secureRoute, users.artistsDisconnectInsta);
 
+router.route('/artists/:id/locations')
+  .post(secureRoute, users.artistAddLocation);
+
 router.route('/styles')
   .get(styles.index)
   .post(styles.create);
