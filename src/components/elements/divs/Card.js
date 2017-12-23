@@ -8,9 +8,10 @@ const Card = styled.div`
   text-align: ${props => props.align || 'left'};
   min-height: 200px;
   transition: all linear 0.3s;
+  padding: ${props => props.padding};
   &:hover {
     background-color: ${props => props.theme.colors[props.hoverColor] || 'none'};
-    cursor: ${props => props.hoverColor ? 'pointer' : 'default'};
+    cursor: ${props => props.hover ? 'pointer' : 'default'};
   }
 `;
 

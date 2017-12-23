@@ -43,10 +43,14 @@ class Register extends React.Component {
       .post('/api/register', this.state.user)
       .then(res => {
         Auth.setToken(res.data.token);
-        this.props.history.push({
-          pathname: '/',
-          state: { message: res.data.message }
-        });
+        if (res.data.user.role === 'artist') {
+          this.props.history.push('/my-profile');
+        } else {
+          this.props.history.push({
+            pathname: '/',
+            state: { message: res.data.message }
+          });
+        }
       })
       .catch(err => console.log(err));
   }

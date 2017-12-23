@@ -87,6 +87,22 @@ function artistAddLocation(req, res, next) {
     .catch(next);
 }
 
+function artistRemoveLocation(req, res, next) {
+  User
+    .findById(req.params.id)
+    .exec()
+    .then(user => {
+      if (!user) return res.notFound();
+
+      const location = user.locations.find(location => `${location.id}` === req.params.locationId);
+
+      location.remove();
+      return user.save();
+    })
+    .then(user => res.status(200).json(user))
+    .catch(next);
+}
+
 function artistsDisconnectInsta(req, res, next) {
   User
     .findById(req.params.id)
@@ -114,7 +130,8 @@ module.exports = {
   artistsDisconnectInsta,
   show: usersShow,
   update: userUpdate,
-  artistAddLocation
+  artistAddLocation,
+  artistRemoveLocation
 };
 
 // Imagine that you are adding locations:

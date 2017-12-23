@@ -14,6 +14,7 @@ import Card from '../elements/divs/Card';
 import ColoredSection from '../elements/divs/ColoredSection';
 import RoundedDiv from '../elements/divs/RoundedDiv';
 import ModalBackground from '../elements/divs/ModalBackground';
+import AbsolutelyPosition from '../elements/divs/AbsolutelyPosition';
 import Message from '../elements/messages/Message';
 import ActualButton from '../elements/buttons/ActualButton';
 import Button from '../elements/buttons/Button';
@@ -41,6 +42,7 @@ class ArtistProfile extends React.Component {
     this.disconnectInsta = this.disconnectInsta.bind(this);
     this.closeMsg = this.closeMsg.bind(this);
     this.showForm = this.showForm.bind(this);
+    this.removeLocation = this.removeLocation.bind(this);
   }
 
   componentDidMount() {
@@ -113,6 +115,17 @@ class ArtistProfile extends React.Component {
   showForm(form, fieldToShow) {
     const showHide = !this.state[form];
     this.setState({[form]: showHide, field: fieldToShow});
+  }
+
+  removeLocation(locationId) {
+    Axios
+      .delete(`/api/artists/${Auth.getPayload().userId}/locations/${locationId}`, {
+        headers: {'Authorization': `Bearer ${Auth.getToken()}`}
+      })
+      .then(() => {
+        this.fetchArtist();
+      })
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -271,18 +284,37 @@ class ArtistProfile extends React.Component {
             <h2 style={{marginBottom: '20px'}}>Working at:</h2>
             <Row>
               { this.state.user.locations.map(location => <Col md={4} key={location.id}>
-                <Link to={`/studios/${location.studioEvent.id}`}>
-                  <Card
-                    border="solid 4px black"
-                    radius="4px"
-                    hoverColor="darkerGrey"
-                    align="center"
-                    // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
-                  >
-                    <p>{location.studioEvent.name}</p>
-                    { location.resident && <p>Resident</p>}
-                  </Card>
-                </Link>
+                <Card
+                  border="solid 4px black"
+                  radius="4px"
+                  hoverColor="darkerGrey"
+                  align="center"
+                  style={{position: 'relative'}}
+                  // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
+                >
+                  <Link to={`/studios/${location.studioEvent.id}`}>
+                    <AbsolutelyPosition
+                      textAlign="left"
+                      bottom="10px"
+                      left="10px"
+                    >
+                      <p>{location.studioEvent.name}</p>
+                      { location.resident && <p>Resident</p>}
+                    </AbsolutelyPosition>
+                  </Link>
+                  <AbsolutelyPosition
+                    bottom="10px"
+                    right="10px"
+                    onClick={() => this.removeLocation(location.id)}
+                  ><ActualButton>
+                      <Icon
+                        className="fa fa-trash"
+                        aria-hidden="true"
+                        hover={true}
+                      />
+                    </ActualButton>
+                  </AbsolutelyPosition>
+                </Card>
               </Col>
               )}
               <Col md={4}>
@@ -290,6 +322,7 @@ class ArtistProfile extends React.Component {
                   border="solid 4px black"
                   radius="4px"
                   hoverColor="darkerGrey"
+                  hover={true}
                   align="center"
                   onClick={() => this.showForm('showStudioForm')}
                 ><Icon

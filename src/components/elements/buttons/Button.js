@@ -12,6 +12,7 @@ const Button = styled(Link)`
   background-color: ${props => props.background ?
     props.theme.colors[props.background] :
     props.theme.colors.darkGrey};
+  font-size: ${props => props.fontSize};
   transition: all linear 0.3s;
   &:hover {
     color: ${props => props.theme.colors.black };

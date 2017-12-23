@@ -21,19 +21,22 @@ class ArtistShow extends React.Component {
       .get(`/api/artists/${this.props.match.params.id}`)
       .then(res => {
         this.setState({ artist: res.data }, () => {
-          Axios.all([
-            Axios.get(`https://api.instagram.com/v1/users/${res.data.instaId}/?access_token=${res.data.instaAccessToken}`),
-            Axios.get(`https://api.instagram.com/v1/users/${res.data.instaId}/media/recent/?access_token=${res.data.instaAccessToken}`)
-          ])
-            .then(Axios.spread((artistInfo, artistPhotos) => {
-              const instaInfo = { followers: artistInfo.data.data.counts.followed_by, media: artistInfo.data.data.counts.media };
-              const artist = Object.assign({}, this.state.artist, {
-                instaStream: artistPhotos.data.data,
-                instaInfo
-              });
+          if (res.data.instaId) {
 
-              this.setState({ artist });
-            }));
+            Axios.all([
+              Axios.get(`https://api.instagram.com/v1/users/${res.data.instaId}/?access_token=${res.data.instaAccessToken}`),
+              Axios.get(`https://api.instagram.com/v1/users/${res.data.instaId}/media/recent/?access_token=${res.data.instaAccessToken}`)
+            ])
+              .then(Axios.spread((artistInfo, artistPhotos) => {
+                const instaInfo = { followers: artistInfo.data.data.counts.followed_by, media: artistInfo.data.data.counts.media };
+                const artist = Object.assign({}, this.state.artist, {
+                  instaStream: artistPhotos.data.data,
+                  instaInfo
+                });
+
+                this.setState({ artist });
+              }));
+          }
         });
       })
       .catch(err => console.log('err', err));
@@ -52,14 +55,16 @@ class ArtistShow extends React.Component {
           radius="4px"
           margin="10px"
         >{ this.props.location.state.message }
-          <Link to="/options">Back</Link>
+          <Link to="/my-profile">Back</Link>
           <button onClick={this.closeMsg}>Close</button>
         </Message>}
         <h1>{`${this.state.artist.username}'s profile`}</h1>
-        <h2>Instagram</h2>
-        { this.state.artist.instaInfo && <Insta
-          artist={this.state.artist}
-        />}
+        { this.state.artist.instaInfo && <div>
+          <h2>Instagram</h2>
+          <Insta
+            artist={this.state.artist}
+          />
+        </div>}
       </section>
 
     );

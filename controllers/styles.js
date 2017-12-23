@@ -19,7 +19,20 @@ function stylesIndex(req, res, next) {
     .catch(next);
 }
 
+function stylesShow(req, res, next) {
+  Style
+    .findById(req.params.id)
+    .fill('artists')
+    .exec()
+    .then(style => {
+      if (!style) return res.notFound();
+      return res.status(200).json(style);
+    })
+    .catch(next);
+}
+
 module.exports = {
   create: styleCreate,
-  index: stylesIndex
+  index: stylesIndex,
+  show: stylesShow
 };

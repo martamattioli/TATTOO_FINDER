@@ -7,7 +7,8 @@ const SassVariables = {
     white: '#fff',
     red: 'red',
     green: 'green',
-    lightBlue: '#22A7F0'
+    lightBlue: '#22A7F0',
+    disabled: '#9e9e9e'
   }
 };
 

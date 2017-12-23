@@ -103,7 +103,8 @@ function setPasswordConfirmation(passwordConfirmation) {
 
 function validatePasswordHash() {
   if (this.isNew) {
-    if (!this._password || !this.facebookId) {
+    // console.log(!!this._password, !!this.facebookId, !!this._password || !!this.facebookId);
+    if (!this._password || (!this._password && !this.facebookId)) {
       return this.invalidate('password', 'A password is required.');
     }
     if(!this.facebookId) {
