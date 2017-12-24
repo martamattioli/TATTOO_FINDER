@@ -30,7 +30,7 @@ class AddStudio extends React.Component {
       .catch(err => console.log(err));
   }
 
-  findLocation(name, address, location, website, country, locationId) {
+  findLocation(name, address, location, website, country, locationId, image) {
     // console.log('finding location', 'name =>', name, 'address =>', address, 'location =>', location, 'website =>', website, 'country =>', country, 'locationId =>', locationId);
     const studio = this.state.studios.find(studio => studio.locationId === locationId);
 
@@ -43,7 +43,8 @@ class AddStudio extends React.Component {
         location,
         website,
         country,
-        locationId
+        locationId,
+        image
       };
 
       Axios

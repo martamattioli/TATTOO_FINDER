@@ -9,6 +9,7 @@ const Card = styled.div`
   min-height: 200px;
   transition: all linear 0.3s;
   padding: ${props => props.padding};
+  background: ${props => props.background || 'none'};
   &:hover {
     background-color: ${props => props.theme.colors[props.hoverColor] || 'none'};
     cursor: ${props => props.hover ? 'pointer' : 'default'};

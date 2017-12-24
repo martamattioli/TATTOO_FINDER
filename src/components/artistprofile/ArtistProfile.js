@@ -69,6 +69,7 @@ class ArtistProfile extends React.Component {
       showUserForm: showHide,
       showStudioForm: showHide
     }, () => {
+      console.log(this.state);
       // if (this.state.isInstaConnected) {
       //   Axios.all([
       //     Axios.get(`https://api.instagram.com/v1/users/self/?access_token=${Auth.getPayload().access_token}`),
@@ -291,6 +292,7 @@ class ArtistProfile extends React.Component {
                   hoverColor="darkerGrey"
                   align="center"
                   style={{position: 'relative'}}
+                  background={`url(${location.studioEvent.image})`}
                   // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
                 >
                   <Link to={`/studios/${location.studioEvent.id}`}>
