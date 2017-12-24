@@ -38,9 +38,6 @@ function getArtists(next) {
         const style = artist.styles.find(style => {
           return `${style._id}` === `${this._id}`;
         });
-        // artist.styles = artist.styles.filter(style => {
-        //   return `${style.id}` !== `${this._id}`;
-        // });
         const isStyleTrue = (style) ? true : false;
         return isStyleTrue;
       });

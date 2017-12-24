@@ -6,6 +6,9 @@ const AbsolutelyPosition = styled.div`
   left: ${props => props.left};
   right: ${props => props.right};
   text-align: ${props => props.textAlign};
+  padding: ${props => props.padding};
+  background: ${props => props.background};
+  width: ${props => props.width};
 `;
 
 export default AbsolutelyPosition;

@@ -61,6 +61,7 @@ class Register extends React.Component {
         <h1>Join us!</h1>
         <UserRegisterForm
           user={this.state.user}
+          cta="Register"
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
         />

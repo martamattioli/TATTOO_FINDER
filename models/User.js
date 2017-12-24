@@ -50,7 +50,11 @@ const userSchema = new Schema({
   country: { type: Schema.ObjectId, ref: 'Country' },
   role: String,
   styles: [{ type: Schema.ObjectId, ref: 'Style' }],
-  locations: [studioEventSchema]
+  locations: [studioEventSchema],
+  isClaimed: Boolean,
+  registrationCode: String
+}, {
+  timestamps: true
 });
 
 userSchema.plugin(require('mongoose-unique-validator'));
@@ -83,6 +87,10 @@ userSchema
 userSchema
   .virtual('percentageComplete')
   .get(percentageComplete);
+
+userSchema
+  .post('init', checkRegistrationCode);
+
 
 // userSchema
 //   .path('username')
@@ -168,6 +176,15 @@ function percentageComplete() {
   });
 
   return Math.floor((count/sum) * 100);
+}
+
+function checkRegistrationCode(doc, next) {
+  const difference = (new Date(Date.now()).getTime() - doc.createdAt.getTime());
+  const hoursSinceScreated = (difference / 1000)/ 3600;
+  if (doc.registrationCode && hoursSinceScreated > 24) {
+    doc.registrationCode = null;
+  }
+  next();
 }
 
 

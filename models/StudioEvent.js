@@ -82,6 +82,7 @@ function countRatings() {
 function getArtists(next) {
   this.db.model('User')
     .find({role: 'artist'})
+    .populate('styles')
     .exec()
     .then(artists => {
       const filtered = artists.filter(artist => {

@@ -165,7 +165,7 @@ class ArtistProfile extends React.Component {
         <div style={{textAlign: 'center', margin: '40px 0 50px 0'}}>
           <ProfilePic
             picture={this.state.user.image}
-            isClaimed={true}
+            isClaimed={this.state.user.isClaimed}
           />
           {this.state.user.image && <Icon
             className="fa fa-pencil-alt"

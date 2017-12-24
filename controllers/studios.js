@@ -33,7 +33,8 @@ function studiosEventsIndex(req, res, next) {
 function studiosEventsShow(req, res, next) {
   StudioEvent
     .findById(req.params.id)
-    .populate('artists country')
+    .populate('country')
+    .fill('artists')
     .exec()
     .then(studiosEvents => res.status(200).json(studiosEvents))
     .catch(next);

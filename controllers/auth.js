@@ -13,6 +13,9 @@ function register(req, res, next) {
         country.save();
         if (req.body.country && country) req.body.country = country.id;
       }
+
+      if (req.body.role === 'artist') req.body.registrationCode = generateId();
+
       return User
         .create(req.body);
     })
@@ -23,12 +26,47 @@ function register(req, res, next) {
     .catch(next);
 }
 
+function generateId() {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
+
 function login(req, res, next) {
   User
     .findOne({ $or: [{ 'username': req.body.name }, { 'email': req.body.name }] })
     .exec()
     .then(user => {
       if (!user || !user.validatePassword(req.body.password)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
+
+      const accessToken = user.instaAccessToken ? user.instaAccessToken : null;
+      const token = jwt.sign({ userId: user.id, access_token: accessToken, role: user.role }, secret, { expiresIn: '24hr' });
+
+      return res.json({ message: `Welcome ${user.username}`, token, user });
+    })
+    .catch(next);
+}
+
+function artistFirstLogin(req, res, next) {
+  User
+    .findOne({ $or: [{ 'username': req.body.name }, { 'email': req.body.name }] })
+    .exec()
+    .then(user => {
+      if (!user || !user.validatePassword(req.body.password) || (user.role === 'artist' && !req.body.registrationCode)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
+      // if () return res.status(401).json({ message: 'It seems like the registration code is incorrect'});
+
+      for (const field in req.body) {
+        if (field === 'registrationCode') {
+          user[field] = null;
+        } else {
+          user[field] = req.body[field];
+        }
+      }
+
+      user.save();
+
       const accessToken = user.instaAccessToken ? user.instaAccessToken : null;
       const token = jwt.sign({ userId: user.id, access_token: accessToken, role: user.role }, secret, { expiresIn: '24hr' });
 
@@ -54,5 +92,6 @@ function login(req, res, next) {
 
 module.exports = {
   register,
-  login
+  login,
+  artistFirstLogin
 };
