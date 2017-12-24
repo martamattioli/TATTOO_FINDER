@@ -59,7 +59,6 @@ class ArtistProfile extends React.Component {
   }
 
   doChecks(res, showHide) {
-    console.log(res.data);
     const isArtist = (res.data.role === 'artist') ? true : false;
     const isInstaConnected = res.data.instaAccessToken ? true : false;
     this.setState({
@@ -199,6 +198,7 @@ class ArtistProfile extends React.Component {
             <span>
               <Icon
                 className="far fa-envelope"
+                aria-hidden="far fa-envelope"
               /> { this.state.user.email } <ActualButton
                 onClick={() => this.showForm('showUserForm', 'email')}
               ><Icon

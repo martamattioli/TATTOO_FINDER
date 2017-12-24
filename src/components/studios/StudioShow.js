@@ -22,7 +22,7 @@ class StudioShow extends React.Component {
   componentDidMount() {
     Axios
       .get(`/api/studios/${this.props.match.params.id}`)
-      .then(res => this.setState({ studio: res.data }, () => console.log(this.state)))
+      .then(res => this.setState({ studio: res.data }))
       .catch(err => console.log(err));
   }
 

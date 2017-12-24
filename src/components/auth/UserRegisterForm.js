@@ -6,7 +6,7 @@ import Label from '../elements/formElements/Label';
 import TextInput from '../elements/formElements/TextInput';
 import SubmitButton from '../elements/formElements/SubmitButton';
 
-const UserRegisterForm = ({ user, cta, nameUsername, nameEmail, handleChange, handleSubmit, registrationCode }) => {
+const UserRegisterForm = ({ user, cta, handleChange, handleSubmit, registrationCode, passwordPlaceholder }) => {
   return (
     <Form onSubmit={handleSubmit}>
       { registrationCode && <div>
@@ -42,7 +42,7 @@ const UserRegisterForm = ({ user, cta, nameUsername, nameEmail, handleChange, ha
           name="password"
           value={user.password}
           onChange={handleChange}
-          placeholder="Add new password"
+          placeholder={passwordPlaceholder || 'Enter a password'}
         />
       </div>
       <div>

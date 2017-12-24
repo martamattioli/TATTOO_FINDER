@@ -8,7 +8,6 @@ import ProfilePic from '../artistprofile/ProfilePic';
 
 const ArtistCard = ({ artist, thisStyleId, size }) => {
   return(
-
     <Card
       border="solid 4px black"
       radius="4px"

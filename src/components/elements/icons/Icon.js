@@ -5,7 +5,7 @@ const Icon = styled.i`
   color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
   margin-left: ${props => props.addMarginLeft};
   margin-right: ${props => props.addMarginRight};
-  vertical-align: 0;
+  vertical-align: ${props => !props.verticalAlign ? null : '20px'};
 
 ${'' /* IF ICON IS CENTERED */}
   position: ${props => props.centerPosition ? 'absolute' : props.position};
