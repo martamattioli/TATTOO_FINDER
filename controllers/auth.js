@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { secret } = require('../config/env');
 const User = require('../models/User');
 const Country = require('../models/Country');
+const bcrypt = require('bcrypt');
 
 function register(req, res, next) {
   Country
@@ -27,11 +28,14 @@ function register(req, res, next) {
 }
 
 function generateId() {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let registrationCode = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (var i = 0; i < 5; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  return text;
+    registrationCode += possible.charAt(Math.floor(Math.random() * possible.length));
+  console.log('this is the registrationCode', registrationCode);
+  registrationCode = bcrypt.hashSync(registrationCode, bcrypt.genSaltSync(8));
+  console.log(registrationCode);
+  return registrationCode;
 }
 
 function login(req, res, next) {
@@ -50,16 +54,19 @@ function login(req, res, next) {
 }
 
 function artistFirstLogin(req, res, next) {
+  console.log('req body in artistFirstLogin', req.body);
   User
-    .findOne({ $or: [{ 'username': req.body.name }, { 'email': req.body.name }] })
+    .findOne({ $or: [{ 'username': req.body.username }, { 'email': req.body.email }] })
     .exec()
     .then(user => {
-      if (!user || !user.validatePassword(req.body.password) || (user.role === 'artist' && !req.body.registrationCode)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
-      // if () return res.status(401).json({ message: 'It seems like the registration code is incorrect'});
+      // console.log('USER FOUND', user);
+      if (!user || !user.checkRegistrationCode(req.body.registrationCode)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
+      // if (!user || !user.validatePassword(req.body.password) || (user.role === 'artist' && !req.body.registrationCode)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
 
       for (const field in req.body) {
         if (field === 'registrationCode') {
           user[field] = null;
+          user.isClaimed = true;
         } else {
           user[field] = req.body[field];
         }

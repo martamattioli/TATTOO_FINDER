@@ -166,6 +166,7 @@ class ArtistProfile extends React.Component {
           <ProfilePic
             picture={this.state.user.image}
             isClaimed={this.state.user.isClaimed}
+            size="large"
           />
           {this.state.user.image && <Icon
             className="fa fa-pencil-alt"

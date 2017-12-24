@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
 import ShowCard from '../elements/divs/ShowCard';
@@ -28,13 +29,13 @@ class StudioShow extends React.Component {
 
   render() {
     if (!this.state.studio) return null;
-    const size = 100;
+    // const size = 100;
     return(
       <section>
         <Grid fluid>
           <ShowCard>
             <CoverPhoto
-              background="https://static1.squarespace.com/static/57a236d4d482e929fb22688d/57a38b25414fb54f51f2dca4/57a38c4ab3db2b452529c060/1470336076803/Safe+House-7.jpg"
+              background={this.state.studio.image || 'https://static1.squarespace.com/static/57a236d4d482e929fb22688d/57a38b25414fb54f51f2dca4/57a38c4ab3db2b452529c060/1470336076803/Safe+House-7.jpg'}
             >
               <AbsolutelyPosition
                 bottom="40px"
@@ -44,24 +45,37 @@ class StudioShow extends React.Component {
                 width="100%"
                 padding="20px"
               >
-                <h1>{this.state.studio.name} <FlagIcon
-                  width="50px"
-                  height="25px"
-                  background={this.state.studio.country.flag}
-                ></FlagIcon>
+                <h1>{this.state.studio.name} <Link
+                  to={`/countries/${this.state.studio.country.id}`}
+                >
+                  <FlagIcon
+                    width="50px"
+                    height="25px"
+                    background={this.state.studio.country.flag}
+                    hover={true}
+                  ></FlagIcon>
+                </Link>
                 </h1>
-                <p>{this.state.studio.averageRatings}</p>
+                <h2
+                  style={{marginTop: '10px'}}
+                >Average ratings: { this.state.studio.averageRatings > 0 &&
+                  <span>{this.state.studio.averageRatings}</span> ||
+                  <span>n/a</span>}
+                </h2>
               </AbsolutelyPosition>
             </CoverPhoto>
-            <Row>
+            { this.state.studio.artists.length > 0 && <Row style={{margin: '20px auto'}}>
+              <Col xs={12}>
+                <h3 style={{margin: '20px auto'}}>Resident Artists:</h3>
+              </Col>
               {this.state.studio.artists.map(artist => <Col sm={4} key={artist.id}>
                 <ArtistCard
                   artist={artist}
                   thisStyleId={this.props.match.params.id}
-                  size={size}
+                  size="small"
                 />
               </Col>)}
-            </Row>
+            </Row>}
           </ShowCard>
         </Grid>
       </section>

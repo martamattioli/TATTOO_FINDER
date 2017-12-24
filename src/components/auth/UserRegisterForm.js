@@ -6,7 +6,7 @@ import Label from '../elements/formElements/Label';
 import TextInput from '../elements/formElements/TextInput';
 import SubmitButton from '../elements/formElements/SubmitButton';
 
-const UserRegisterForm = ({ user, cta, handleChange, handleSubmit, registrationCode }) => {
+const UserRegisterForm = ({ user, cta, nameUsername, nameEmail, handleChange, handleSubmit, registrationCode }) => {
   return (
     <Form onSubmit={handleSubmit}>
       { registrationCode && <div>

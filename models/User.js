@@ -88,8 +88,12 @@ userSchema
   .virtual('percentageComplete')
   .get(percentageComplete);
 
-userSchema
-  .post('init', checkRegistrationCode);
+userSchema.methods.checkRegistrationCode = checkRegistrationCode;
+  // .path('registrationCode')
+  // .validate(validateRegistrationCode);
+
+// userSchema
+//   .post('init', checkRegistrationCode);
 
 
 // userSchema
@@ -178,13 +182,9 @@ function percentageComplete() {
   return Math.floor((count/sum) * 100);
 }
 
-function checkRegistrationCode(doc, next) {
-  const difference = (new Date(Date.now()).getTime() - doc.createdAt.getTime());
-  const hoursSinceScreated = (difference / 1000)/ 3600;
-  if (doc.registrationCode && hoursSinceScreated > 24) {
-    doc.registrationCode = null;
-  }
-  next();
+function checkRegistrationCode(registrationCode) {
+  console.log(bcrypt.compareSync(registrationCode, this.registrationCode));
+  return bcrypt.compareSync(registrationCode, this.registrationCode);
 }
 
 

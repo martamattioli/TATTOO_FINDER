@@ -4,8 +4,11 @@ import Card from '../elements/divs/Card';
 import Circle from '../elements/divs/Circle';
 import ActualButton from '../elements/buttons/ActualButton';
 
+import ProfilePic from '../artistprofile/ProfilePic';
+
 const ArtistCard = ({ artist, thisStyleId, size }) => {
   return(
+
     <Card
       border="solid 4px black"
       radius="4px"
@@ -19,18 +22,17 @@ const ArtistCard = ({ artist, thisStyleId, size }) => {
         <div
           style={{margin: '0 0 20px 0'}}
         >
-          <Circle
-            profilePic={artist.instaProfilePic}
-            width={`${size}px`}
-            height={`${size}px`}
+          <ProfilePic
+            picture={artist.image}
+            isClaimed={artist.isClaimed}
+            size={size}
           />
           <h3>{artist.username}</h3>
         </div>
       </Link>
       <div>
-        <h3 style={{fontSize: '18px', marginBottom: '10px'}}>Other styles:</h3>
+        <h3 style={{fontSize: '18px', marginBottom: '10px'}}>Styles:</h3>
         {artist.styles.map((style, index) => {
-          console.log(`${style.id}`, `${thisStyleId}`, `${style.id}` === `${thisStyleId}`);
           return(
             <ActualButton
               key={style.id}
