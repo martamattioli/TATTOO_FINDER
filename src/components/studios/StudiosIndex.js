@@ -4,6 +4,7 @@ import Axios from 'axios';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import StudioCard from './StudioCard';
+import SelectedText from '../elements/typography/SelectedText';
 
 class StudiosIndex extends React.Component {
   constructor() {
@@ -40,8 +41,13 @@ class StudiosIndex extends React.Component {
     return(
       <section>
         <Grid fluid>
+          <h1 onClick={this.toggleShow}>
+            <SelectedText selected={this.state.showStudios}
+            >Browse studios</SelectedText>
+            <SelectedText selected={!this.state.showStudios}
+            >Browse events</SelectedText>
+          </h1>
           { this.state.showStudios && <div>
-            <h1 onClick={this.toggleShow}>Browse studios</h1>
             <Row>
               {this.state.studios.map(studio => <Col sm={4} key={studio.id}>
                 <StudioCard
@@ -51,7 +57,6 @@ class StudiosIndex extends React.Component {
             </Row>
           </div>}
           { !this.state.showStudios && <div>
-            <h1 onClick={this.toggleShow}>Browse events</h1>
             <Row>
               {this.state.events.map(event => <Col sm={4} key={event.id}>
                 <StudioCard

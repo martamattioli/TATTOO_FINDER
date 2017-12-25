@@ -23,6 +23,11 @@ a {
   transition: all 0.3s linear;
   &:hover {
     color: $darkerGrey;
+    text-decoration: none;
+  }
+  &:focus {
+    text-decoration: none;
+    outline: none;
   }
 }
 

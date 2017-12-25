@@ -13,6 +13,7 @@ const Card = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  margin-top: ${props => props.moveToTop};
   &:hover {
     background-color: ${props => props.theme.colors[props.hoverColor] || 'none'};
     cursor: ${props => props.hover ? 'pointer' : 'default'};

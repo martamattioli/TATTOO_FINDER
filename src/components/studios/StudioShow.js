@@ -17,6 +17,7 @@ class StudioShow extends React.Component {
     this.state = {
       studio: null
     };
+    this.fetchStyle = this.fetchStyle.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +27,15 @@ class StudioShow extends React.Component {
       .catch(err => console.log(err));
   }
 
+  fetchStyle(id) {
+    Axios
+      .get(`/api/styles/${id}`)
+      .then(res => {
+        this.props.history.push(`/styles/${id}`);
+        this.setState({style: res.data}, () => console.log(this.state));
+      })
+      .catch(err => console.log(err));
+  }
 
   render() {
     if (!this.state.studio) return null;
@@ -72,6 +82,7 @@ class StudioShow extends React.Component {
                   artist={artist}
                   inStudios={true}
                   thisResourceId={this.props.match.params.id}
+                  linkToStyle={true}
                   size="small"
                 />
               </Col>)}

@@ -7,11 +7,12 @@ const Circle = styled.div`
   border-radius: 50%;
   background: ${props => props.profilePic ?
     `url(${props.profilePic})` :
-    props.theme.colors.lightGrey};
+    props.theme.colors.darkGrey};
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   display: inline-block;
+  margin-top: ${props => props.moveToTop}
 `;
 
 export default Circle;

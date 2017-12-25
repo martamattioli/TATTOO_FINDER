@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import moment from 'moment';
 
@@ -8,16 +8,18 @@ import ActualButton from '../elements/buttons/ActualButton';
 
 import ProfilePic from '../artistprofile/ProfilePic';
 
-const ArtistCard = ({ artist, thisResourceId, inStudios, size }) => {
+const ArtistCard = ({ artist, thisResourceId, inStudios, size, history, fetchStyle }) => {
   const location = artist.locations.find(location => `${location.studioEvent}` === thisResourceId);
+  const moveToTop = '70px';
   return(
     <Card
       border="solid 4px black"
       radius="4px"
-      hoverColor="darkerGrey"
+      hoverColor="lightGrey"
       align="center"
       padding="20px"
       style={{position: 'relative'}}
+      moveToTop={moveToTop}
       // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
     >
       <Link to={`/artists/${artist.id}`}>
@@ -28,17 +30,19 @@ const ArtistCard = ({ artist, thisResourceId, inStudios, size }) => {
             picture={artist.image}
             isClaimed={artist.isClaimed}
             size={size}
+            moveToTop={`-${moveToTop}`}
           />
           <h3>{artist.username}</h3>
         </div>
       </Link>
       { artist.styles.length > 0 && <div>
-        <h3 style={{fontSize: '14px', marginBottom: '10px'}}>Styles:</h3>
         {artist.styles.map((style, index) => {
           return(
             <ActualButton
               key={style.id}
-              onClick={() => this.fetchStyle(style.id)}
+              onClick={() => {
+                (fetchStyle) ? fetchStyle(style.id): history.push(`/styles/${style.id}`);
+              }}
               background="black"
               color="white"
               fontSize="10px"
@@ -59,4 +63,4 @@ const ArtistCard = ({ artist, thisResourceId, inStudios, size }) => {
   );
 };
 
-export default ArtistCard;
+export default withRouter(ArtistCard);

@@ -5,12 +5,15 @@ import Axios from 'axios';
 import Insta from '../utility/Insta';
 import Message from '../elements/messages/Message';
 
+import Profile from '../utility/Profile';
+
 class ArtistShow extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      artist: null
+      artist: null,
+      isArtist: true
     };
 
     this.closeMsg = this.closeMsg.bind(this);
@@ -20,7 +23,8 @@ class ArtistShow extends React.Component {
     Axios
       .get(`/api/artists/${this.props.match.params.id}`)
       .then(res => {
-        this.setState({ artist: res.data }, () => {
+        const isInstaConnected = res.data.instaAccessToken ? true : false;
+        this.setState({ artist: res.data, isInstaConnected }, () => {
           if (res.data.instaId) {
 
             Axios.all([
@@ -59,12 +63,20 @@ class ArtistShow extends React.Component {
           <button onClick={this.closeMsg}>Close</button>
         </Message>}
         <h1>{`${this.state.artist.username}'s profile`}</h1>
-        { this.state.artist.instaInfo && <div>
+        {/* { this.state.artist.instaInfo && <div>
           <h2>Instagram</h2>
           <Insta
             artist={this.state.artist}
           />
-        </div>}
+        </div>} */}
+        <Profile
+          user={this.state.artist}
+          fetchArtist={this.fetchArtist}
+          removeLocation={this.removeLocation}
+          isArtist={this.state.isArtist}
+          isInstaConnected={this.state.isInstaConnected}
+          isEditable={false}
+        />
       </section>
 
     );

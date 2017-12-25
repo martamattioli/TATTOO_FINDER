@@ -12,6 +12,8 @@ class StyleShow extends React.Component {
     this.state = {
       style: null
     };
+
+    this.fetchStyle = this.fetchStyle.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +43,7 @@ class StyleShow extends React.Component {
                 artist={artist}
                 thisResourceId={this.props.match.params.id}
                 size={size}
+                fetchStyle={this.fetchStyle}
               />
             </Col>)}
           </Row>

@@ -18,7 +18,7 @@ function usersIndex(req, res, next) {
 function artistsIndex(req, res, next) {
   User
     .find({role: 'artist'})
-    .populate('locations.studioEvent country')
+    .populate('locations.studioEvent country styles')
     .exec()
     .then(artists => {
       res.status(200).json(artists);
