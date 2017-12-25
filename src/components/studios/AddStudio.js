@@ -32,9 +32,8 @@ class AddStudio extends React.Component {
 
   findLocation(name, address, location, website, country, locationId, image) {
     // console.log('finding location', 'name =>', name, 'address =>', address, 'location =>', location, 'website =>', website, 'country =>', country, 'locationId =>', locationId);
+    console.log('IMAGEEE', image);
     const studio = this.state.studios.find(studio => studio.locationId === locationId);
-
-    console.log('ALL THE STUDIOS =>', this.state.studios, 'STUDIO=>', studio);
 
     if (!studio) {
       const newStudio = {
@@ -44,7 +43,8 @@ class AddStudio extends React.Component {
         website,
         country,
         locationId,
-        image
+        image,
+        type: this.state.location.type
       };
 
       Axios
@@ -62,8 +62,8 @@ class AddStudio extends React.Component {
   }
 
   handleChange({target: {name, value}}) {
-    const showDate = value === 'event' || value === 'false';
-    console.log(showDate);
+    // const showDate = value === 'event' || value === 'false';
+    // console.log(showDate);
     let location;
     if (name === 'resident') {
       const trueFalse = value === 'true' ? true : false;
@@ -72,26 +72,13 @@ class AddStudio extends React.Component {
       location = Object.assign({}, this.state.location, {[name]: value});
     }
 
-    this.setState({location}, () => console.log(this.state));
+    this.setState({location});
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    let location;
-    if (this.state.location.type === 'studio' && this.state.location.resident && (this.state.location.startDate || this.state.location.endDate)) {
-      location = {
-        type: this.state.location.type,
-        resident: this.state.location.resident,
-        studioEvent: this.state.location.studioEvent
-      };
-    } else if (this.state.location.type === 'event') {
-      location = Object.assign({}, this.state.location, { resident: false });
-    } else {
-      location = this.state.location;
-    }
-
     Axios
-      .post(`/api/artists/${Auth.getPayload().userId}/locations`, location, {
+      .post(`/api/artists/${Auth.getPayload().userId}/locations`, this.state.location, {
         headers: { 'Authorization': `Bearer ${Auth.getToken()}`}
       })
       .then(() => {

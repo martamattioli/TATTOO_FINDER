@@ -73,11 +73,22 @@ function userUpdate(req, res, next) {
 }
 
 function artistAddLocation(req, res, next) {
+  console.log('INITIAL REQ BODY', req.body);
+  if (req.body.type === 'studio' && req.body.resident && (req.body.startDate || req.body.endDate)) {
+    console.log('if is resident');
+    delete req.body.startDate;
+    delete req.body.endDate;
+  } else if (req.body.type === 'event' && req.body.resident) {
+    console.log('if it\'s event');
+    delete req.body.resident;
+  }
+
+  console.log('REQ BODY AFTER HANDLING', req.body);
+
   User
     .findById(req.params.id)
     .exec()
     .then(user => {
-      console.log(user);
       if (!user) return res.notFound();
       user.locations.push(req.body);
 

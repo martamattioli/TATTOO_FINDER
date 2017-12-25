@@ -14,6 +14,7 @@ import ArtistProfile from '../artistprofile/ArtistProfile';
 
 import StyleShow from '../styles/StyleShow';
 
+import StudiosIndex from '../studios/StudiosIndex';
 import StudioShow from '../studios/StudioShow';
 
 const Routes = () => {
@@ -27,6 +28,7 @@ const Routes = () => {
       <Route path="/my-profile" component={ArtistProfile} />
       <Route path="/styles/:id" component={StyleShow} />
       <Route path="/studios/:id" component={StudioShow} />
+      <Route path="/studios" component={StudiosIndex} />
       <Route exact path="/" component={Home} />
     </Switch>
   );

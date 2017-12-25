@@ -7,7 +7,7 @@ const studioEventSchema = new Schema({
   name: String,
   country: { type: Schema.ObjectId, ref: 'Country', required: 'This field is required' },
   address: String,
-  image: String,
+  image: [String],
   locationId: { type: String, unique: true },
   location: {
     lat: Number,
@@ -53,7 +53,7 @@ studioEventSchema.plugin(require('../lib/globalToJSON'));
 
 function isDateInThePast() {
   if (this.endDate) return this.endDate.getDate() < (new Date()).getDate();
-  // return null;
+  return false;
 }
 
 function calculateAverage() {
@@ -87,7 +87,8 @@ function getArtists(next) {
     .then(artists => {
       const filtered = artists.filter(artist => {
         const locations = artist.locations.filter(location => {
-          return location.resident === true && `${location.studioEvent}` === `${this.id}`;
+          const isPast = isDateInThePast();
+          return (location.resident || !isPast) && `${location.studioEvent}` === `${this.id}`;
         });
         return locations.length > 0;
       });

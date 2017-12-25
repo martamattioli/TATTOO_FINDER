@@ -39,7 +39,7 @@ class StyleShow extends React.Component {
             { this.state.style.artists.map(artist => <Col md={4} key={artist.id}>
               <ArtistCard
                 artist={artist}
-                thisStyleId={this.props.match.params.id}
+                thisResourceId={this.props.match.params.id}
                 size={size}
               />
             </Col>)}

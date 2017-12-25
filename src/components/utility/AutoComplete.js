@@ -9,7 +9,7 @@ class AutoComplete extends React.Component {
 
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace();
-      console.log(place);
+      console.log('PLACE===> ', place);
       // I need website, name, country, address, image, locationId, lat, lng
       const { name, website, place_id } = place;
       const address = place.formatted_address;
@@ -20,9 +20,10 @@ class AutoComplete extends React.Component {
         });
       });
       if (photos.length < 1) photos = ['https://static1.squarespace.com/static/57a236d4d482e929fb22688d/57a38b25414fb54f51f2dca4/57a38c4ab3db2b452529c060/1470336076803/Safe+House-7.jpg'];
+      console.log('PHOTOSSSS', photos);
       const country = place.address_components.find(component => component.types.includes('country')).long_name;
       const location = place.geometry.location.toJSON();
-      this.props.findLocation(name, address, location, website, country, place_id, photos[0]);
+      this.props.findLocation(name, address, location, website, country, place_id, photos);
     });
   }
 

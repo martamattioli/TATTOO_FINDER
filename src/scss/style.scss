@@ -14,8 +14,16 @@ p {
   margin: 0;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   margin: 0;
+}
+
+a {
+  color: $black;
+  transition: all 0.3s linear;
+  &:hover {
+    color: $darkerGrey;
+  }
 }
 
 // ************** ARTIST SHOW  PERCENTAGE COMPLETE BAR **************** //

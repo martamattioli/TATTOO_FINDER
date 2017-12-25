@@ -2,8 +2,8 @@ import styled, { css } from 'styled-components';
 
 const Circle = styled.div`
   position: relative;
-  width: ${props => props.size === 'large' ? '150px' : '100px'};
-  height: ${props => props.size === 'large' ? '150px' : '100px'};
+  width: ${props => props.size === 'large' ? '150px' : '90px'};
+  height: ${props => props.size === 'large' ? '150px' : '90px'};
   border-radius: 50%;
   background: ${props => props.profilePic ?
     `url(${props.profilePic})` :

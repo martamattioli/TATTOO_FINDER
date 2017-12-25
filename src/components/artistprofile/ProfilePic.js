@@ -7,7 +7,7 @@ const ProfilePic = ({ picture, isClaimed, size }) => {
   let fontSize;
   let right;
   if (size === 'small') {
-    fontSize = '25px';
+    fontSize = '20px';
     right = '5px';
   } else if (size === 'medium') {
     fontSize = '40px';

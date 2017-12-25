@@ -6,6 +6,7 @@ const Icon = styled.i`
   margin-left: ${props => props.addMarginLeft};
   margin-right: ${props => props.addMarginRight};
   vertical-align: ${props => !props.verticalAlign ? null : '20px'};
+  transition: all 0.3s linear;
 
 ${'' /* IF ICON IS CENTERED */}
   position: ${props => props.centerPosition ? 'absolute' : props.position};
@@ -16,7 +17,7 @@ ${'' /* END */}
 
   &:hover {
     cursor: ${props => props.hover ? 'pointer' : 'default'};
-    color: ${props => props.hover ? props.theme.colors.darkGrey : props.theme.colors[props.color]};
+    color: ${props => props.hover ? props.theme.colors[props.hoverColor] : props.theme.colors[props.color]};
   }
 `;
 

@@ -17,7 +17,6 @@ styleSchema.plugin(require('mongoose-unique-validator'));
 
 styleSchema
   .pre('save', function(next) {
-    console.log('preSave');
     this.name = this.name.toUpperCase();
     next();
   });

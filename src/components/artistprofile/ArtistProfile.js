@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import moment from 'moment';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -14,7 +15,6 @@ import Card from '../elements/divs/Card';
 import ColoredSection from '../elements/divs/ColoredSection';
 import RoundedDiv from '../elements/divs/RoundedDiv';
 import ModalBackground from '../elements/divs/ModalBackground';
-import AbsolutelyPosition from '../elements/divs/AbsolutelyPosition';
 import Message from '../elements/messages/Message';
 import ActualButton from '../elements/buttons/ActualButton';
 import Button from '../elements/buttons/Button';
@@ -24,6 +24,7 @@ import InstaOauthButton from '../auth/InstaOauthButton';
 import UserForm from './UserForm';
 import StylesForm from '../styles/StylesForm';
 import AddStudio from '../studios/AddStudio';
+import StudioCard from '../studios/StudioCard';
 
 class ArtistProfile extends React.Component {
   constructor() {
@@ -69,7 +70,6 @@ class ArtistProfile extends React.Component {
       showUserForm: showHide,
       showStudioForm: showHide
     }, () => {
-      console.log(this.state);
       // if (this.state.isInstaConnected) {
       //   Axios.all([
       //     Axios.get(`https://api.instagram.com/v1/users/self/?access_token=${Auth.getPayload().access_token}`),
@@ -286,38 +286,11 @@ class ArtistProfile extends React.Component {
             <h2 style={{marginBottom: '20px'}}>Working at:</h2>
             <Row>
               { this.state.user.locations.map(location => <Col md={4} key={location.id}>
-                <Card
-                  border="solid 4px black"
-                  radius="4px"
-                  hoverColor="darkerGrey"
-                  align="center"
-                  style={{position: 'relative'}}
-                  background={`url(${location.studioEvent.image})`}
-                  // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
-                >
-                  <Link to={`/studios/${location.studioEvent.id}`}>
-                    <AbsolutelyPosition
-                      textAlign="left"
-                      bottom="10px"
-                      left="10px"
-                    >
-                      <p>{location.studioEvent.name}</p>
-                      { location.resident && <p>Resident</p>}
-                    </AbsolutelyPosition>
-                  </Link>
-                  <AbsolutelyPosition
-                    bottom="10px"
-                    right="10px"
-                    onClick={() => this.removeLocation(location.id)}
-                  ><ActualButton>
-                      <Icon
-                        className="fa fa-trash"
-                        aria-hidden="true"
-                        hover={true}
-                      />
-                    </ActualButton>
-                  </AbsolutelyPosition>
-                </Card>
+                <StudioCard
+                  studio={location.studioEvent}
+                  location={location}
+                  removeLocation={this.removeLocation}
+                />
               </Col>
               )}
               <Col md={4}>
@@ -354,6 +327,7 @@ class ArtistProfile extends React.Component {
                   <ActualButton
                     onClick={ this.disconnectInsta }
                     background="white"
+                    hover={true}
                   >Disconnect from Instagram</ActualButton>
                 </Col>
               </Row>
