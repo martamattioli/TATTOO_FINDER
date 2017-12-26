@@ -12,6 +12,7 @@ function styleCreate(req, res, next) {
 function stylesIndex(req, res, next) {
   Style
     .find()
+    .fill('artists')
     .exec()
     .then(styles => {
       return res.status(200).json(styles);

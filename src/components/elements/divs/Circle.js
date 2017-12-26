@@ -5,6 +5,7 @@ const Circle = styled.div`
   width: ${props => props.size === 'large' ? '150px' : '90px'};
   height: ${props => props.size === 'large' ? '150px' : '90px'};
   border-radius: 50%;
+  border: ${props => props.border};
   background: ${props => props.profilePic ?
     `url(${props.profilePic})` :
     props.theme.colors.darkGrey};

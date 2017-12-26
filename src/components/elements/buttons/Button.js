@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components';
 
 const Button = styled(Link)`
   display: inline-block;
-  padding: 5px;
-  margin: ${props => props.margin || '5px 0px'};
+  padding: ${props => props.padding || '5px'};
+  margin: ${props => props.margin};
   border-radius: 4px;
   color: ${props => props.color ?
     props.theme.colors[props.color] :

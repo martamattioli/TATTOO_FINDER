@@ -8,7 +8,7 @@ mongoose.Promise = bluebird;
 const User = require('../models/User');
 const Style = require('../models/Style');
 const Country = require('../models/Country');
-const StudioEvent = require('../models/StudioEvent');
+// const StudioEvent = require('../models/StudioEvent');
 
 // User.drop();
 // StudioEvent.drop();
@@ -30,6 +30,18 @@ const styles = [
   {name: 'dotwork'},
   {name: 'geometric'}
 ];
+
+const users = [{
+  username: 'pz',
+  email: 'pz@pz.com',
+  password: 'pw',
+  passwordConfirmation: 'pw',
+  image: 'https://images.pexels.com/photos/194074/pexels-photo-194074.jpeg?w=940&h=650&dpr=2&auto=compress&cs=tinysrgb',
+  firstName: 'Marta',
+  lastName: 'Mattioli',
+  website: 'www.martamattioli.com',
+  role: 'user'
+}];
 
 mongoose
   .connect(db, { useMongoClient: true })
@@ -58,7 +70,12 @@ mongoose
       return Style
         .create(styles);
     })
-    .then(styles => console.log(`${styles.length} styles were created`))
+    .then(styles => {
+      console.log(`${styles.length} styles were created`);
+      return User
+        .create(users);
+    })
+    .then(users => console.log(`${users.length} users were created`))
     .catch(err => console.log(err))
   )
   // .then(() => ADD REQUEST PROMISE TO SEARCH FOR TATTOOPARLOURS AND STUDIOS)

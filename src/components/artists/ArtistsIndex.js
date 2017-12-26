@@ -17,7 +17,7 @@ class ArtistIndex extends React.Component {
   componentDidMount() {
     Axios
       .get('/api/artists')
-      .then(res => this.setState({ artists: res.data }, () => console.log(this.state)))
+      .then(res => this.setState({ artists: res.data }))
       .catch(err => console.log(err));
   }
 

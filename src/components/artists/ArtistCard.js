@@ -16,11 +16,12 @@ const ArtistCard = ({ artist, thisResourceId, inStudios, size, history, fetchSty
       border="solid 4px black"
       radius="4px"
       hoverColor="lightGrey"
+      hover={true}
       align="center"
       padding="20px"
       style={{position: 'relative'}}
       moveToTop={moveToTop}
-      // onClick={() => this.props.history.push(`/studios/${location.studioEvent.id}`)}
+      minHeight="none"
     >
       <Link to={`/artists/${artist.id}`}>
         <div
@@ -31,8 +32,9 @@ const ArtistCard = ({ artist, thisResourceId, inStudios, size, history, fetchSty
             isClaimed={artist.isClaimed}
             size={size}
             moveToTop={`-${moveToTop}`}
+            border="solid 4px black"
           />
-          <h3>{artist.username}</h3>
+          <h3 style={{marginTop: '10px'}}>{artist.username}</h3>
         </div>
       </Link>
       { artist.styles.length > 0 && <div>

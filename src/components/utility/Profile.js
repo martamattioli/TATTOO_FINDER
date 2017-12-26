@@ -23,6 +23,7 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
           picture={user.image}
           isClaimed={user.isClaimed}
           size="large"
+          isEditable={isEditable}
         />
         {user.image && isEditable && <Icon
           className="fa fa-pencil-alt"
@@ -30,50 +31,65 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
           fontSize="20px"
           hover={true}
         />}
-        <h1>{user.username} { isEditable && <ActualButton
-          onClick={() => showForm('showUserForm', 'username')}
-        ><Icon
-            className="fa fa-pencil-alt"
-            aria-hidden="true"
-            fontSize="20px"
-            hover={true}
-          />
-        </ActualButton>}
-        <RoundedDiv
-          display="inline-block"
-          fontSize="18px"
-          margin="0 0 0 20px"
-        ><Icon
-            className="fas fa-star"
-            fontSize="15px"
-            addMarginRight="5px"
-          />{ user.averageRatings === 0 && <span>n/a</span> ||
-            <span>{ user.averageRatings }</span>}
-        </RoundedDiv>
+        <h1
+          style={{marginTop: '20px'}}
+        >{user.username} { isEditable && <ActualButton
+            padding="0"
+            onClick={() => showForm('showUserForm', 'username')}
+          ><Icon
+              className="fa fa-pencil-alt"
+              aria-hidden="true"
+              fontSize="20px"
+              hover={true}
+            />
+          </ActualButton>}
+          <RoundedDiv
+            display="inline-block"
+            fontSize="18px"
+            margin="0 0 0 20px"
+          ><Icon
+              className="fas fa-star"
+              fontSize="15px"
+              addMarginRight="5px"
+            />{ user.averageRatings === 0 && <span>n/a</span> ||
+              <span>{ user.averageRatings }</span>}
+          </RoundedDiv>
         </h1>
-        <h3>
-          { isEditable && <span>
+        <h3 style={{padding: '20px'}}>
+          <span>
             <Icon
               className="far fa-envelope"
               aria-hidden="far fa-envelope"
-            /> { user.email } { isEditable && <ActualButton
-              onClick={() => this.showForm('showUserForm', 'email')}
-            ><Icon
-                className="fa fa-pencil-alt"
-                aria-hidden="true"
-                fontSize="10px"
-                hover={true}
-              />
-            </ActualButton>}</span>}
+            /> {isEditable && [
+              <span key={0}>{ user.email }</span>,
+              <ActualButton
+                key={1}
+                margin="0"
+                padding="0 5px"
+                onClick={() => showForm('showUserForm', 'email')}
+              ><Icon
+                  className="fa fa-pencil-alt"
+                  aria-hidden="true"
+                  fontSize="10px"
+                  hover={true}
+                />
+              </ActualButton>
+            ]} { !isEditable && <a
+              href={'mailto:' + user.email}>
+                Contact him
+            </a>}
+          </span>
           {' '}
-          {(user.website && !isEditable) || isEditable && <span>
+          { (user.website || isEditable) && <span>
             <Icon
               className="fas fa-external-link-alt"
               fontSize="84%"
               addMarginLeft="20px"
-            /> { !showUserForm && <span>
-              { user.website &&
+            /> { !showUserForm && isEditable && <span>
+              { user.website  &&
                 <span>{ user.website } { isEditable && <ActualButton
+                  margin="0"
+                  padding="0 5px"
                   onClick={() => showForm('showUserForm', 'website')}
                 ><Icon
                     className="fa fa-pencil-alt"
@@ -83,6 +99,8 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
                   />
                 </ActualButton>}</span>}
               { !user.website && isEditable && <span>Add your website <ActualButton
+                margin="0"
+                padding="0 5px"
                 onClick={() => showForm('showUserForm', 'website')}
               ><Icon
                   className="fas fa-plus"
@@ -93,12 +111,15 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
               </ActualButton>
               </span>}
             </span>}
+            { !isEditable && <a href={`http://${user.website}`} target="_blank">
+              { user.website }
+            </a>}
           </span>}
         </h3>
         { !showStylesForm && <div>
           { user.styles.length === 0 && <h3>
           Add styles <ActualButton
-              onClick={() => this.showForm('showStylesForm')}
+              onClick={() => showForm('showStylesForm')}
               radius="50%"
               padding="0px 11px 7px 11px"
             ><Icon
@@ -117,8 +138,8 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
                 margin="0 5px"
               >
                 {style.name}
-              </Button>)} <ActualButton
-                onClick={() => this.showForm('showStylesForm')}
+              </Button>)} { isEditable && <ActualButton
+                onClick={() => showForm('showStylesForm')}
                 radius="50%"
                 padding="5px 6px 1px 6px"
               ><Icon
@@ -126,7 +147,7 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
                   aria-hidden="true"
                   fontSize="10px"
                   hover={true}
-                /></ActualButton>
+                /></ActualButton>}
             </div>}
         </div>}
         { showStylesForm && <StylesForm
@@ -137,8 +158,9 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
       </div>
       <ColoredSection
         background="darkGrey"
+        padding="20px 0"
       >
-        <Grid fluid>
+        <Grid>
           <h2 style={{marginBottom: '20px'}}>Working at:</h2>
           <Row>
             { user.locations.map(location => <Col md={4} key={location.id}>
@@ -146,10 +168,11 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
                 studio={location.studioEvent}
                 location={location}
                 removeLocation={removeLocation}
+                isEditable={isEditable}
               />
             </Col>
             )}
-            <Col md={4}>
+            { isEditable && <Col md={4}>
               <Card
                 border="solid 4px black"
                 radius="4px"
@@ -162,14 +185,14 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
                   fontSize="30px"
                   centerPosition={true}
                 /></Card>
-            </Col>
+            </Col>}
           </Row>
         </Grid>
       </ColoredSection>
       {/* { user.instaInfo && <Insta
         artist={user}
       />} */}
-      { isArtist && [
+      { isArtist && isEditable && [
         <ColoredSection
           key={0}
           background="lightGrey"

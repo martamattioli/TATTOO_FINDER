@@ -3,21 +3,9 @@ import { Link } from 'react-router-dom';
 
 import Message from '../elements/messages/Message';
 
-const Home = (props) => {
-  if (props.location.state && props.location.state.message) {
-    setTimeout(() => {
-      props.history.push({ state: { message: null } });
-    }, 2000);
-  }
-
+const Home = () => {
   return(
     <section>
-      {props.location.state && props.location.state.message && <Message
-        background="green"
-        color="white"
-        border="solid 2px black"
-        radius="4px"
-      >{ props.location.state.message }</Message>}
       <h1>Tattoo Finder</h1>
       <h2>Search for...</h2>
       <ul>
@@ -27,7 +15,9 @@ const Home = (props) => {
         <li>
           <Link to="/artists">Artists</Link>
         </li>
-        <li>Styles</li>
+        <li>
+          <Link to="/styles">Styles</Link>
+        </li>
       </ul>
     </section>
   );

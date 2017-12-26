@@ -16,7 +16,10 @@ const PercentageComplete = ({ percent, artistId }) => {
             <p className="percent-p">{percent}% profile completed</p>
           </Col>
           <Col xs={6} sm={6} md={6} className="percent-right">
-            <Button to={`/artists/${artistId}`}>Preview your profile</Button>
+            <Button
+              to={`/artists/${artistId}`}
+              margin="5px"
+            >Preview your profile</Button>
           </Col>
         </Row>
       </Grid>

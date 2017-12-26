@@ -7,7 +7,7 @@ import AbsolutelyPosition from '../elements/divs/AbsolutelyPosition';
 import ActualButton from '../elements/buttons/ActualButton';
 import Icon from '../elements/icons/Icon';
 
-const StudioCard = ({location, studio, removeLocation}) => {
+const StudioCard = ({location, studio, removeLocation, isEditable}) => {
   return(
     <Card
       border="solid 4px black"
@@ -33,7 +33,7 @@ const StudioCard = ({location, studio, removeLocation}) => {
           { !location && <p>{studio.artists.length} artists</p>}
         </AbsolutelyPosition>
       </Link>
-      {location && <AbsolutelyPosition
+      {location && isEditable && <AbsolutelyPosition
         bottom="10px"
         right="10px"
         onClick={() => removeLocation(location.id)}

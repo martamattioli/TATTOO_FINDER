@@ -19,7 +19,7 @@ class ArtistProfile extends React.Component {
   constructor() {
     super();
     this.state = {
-      userId: Auth.getPayload().userId,
+      userId: null,
       user: null,
       isArtist: false,
       isInstaConnected: false,
@@ -36,7 +36,15 @@ class ArtistProfile extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchArtist(false);
+    console.log(Auth.getPayload());
+    const user = Auth.getPayload().userId;
+    let userId;
+    if (user === '5a42045160d7925f053b15d3') {
+      userId = this.props.location.state.userToEdit;
+    } else {
+      userId = user;
+    }
+    this.setState({userId}, () => this.fetchArtist(false));
   }
 
   fetchArtist(showHide) {
@@ -58,23 +66,6 @@ class ArtistProfile extends React.Component {
       showStylesForm: showHide,
       showUserForm: showHide,
       showStudioForm: showHide
-    }, () => {
-      // if (this.state.isInstaConnected) {
-      //   Axios.all([
-      //     Axios.get(`https://api.instagram.com/v1/users/self/?access_token=${Auth.getPayload().access_token}`),
-      //     Axios.get(`https://api.instagram.com/v1/users/self/media/recent/?access_token=${Auth.getPayload().access_token}`)
-      //   ])
-      //     .then(Axios.spread((artistInfo, artistPhotos) => {
-      //       console.log(artistInfo, artistPhotos);
-      //       const instaInfo = { followers: artistInfo.data.data.counts.followed_by, media: artistInfo.data.data.counts.media };
-      //       const user = Object.assign({}, this.state.user, {
-      //         instaStream: artistPhotos.data.data,
-      //         instaInfo
-      //       });
-      //
-      //       this.setState({ user }, () => console.log('IN PROFILE OPTIONS', this.state));
-      //     }));
-      // }
     });
   }
 

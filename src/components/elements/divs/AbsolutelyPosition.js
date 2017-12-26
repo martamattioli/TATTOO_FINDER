@@ -9,6 +9,7 @@ const AbsolutelyPosition = styled.div`
   padding: ${props => props.padding};
   background: ${props => props.background};
   width: ${props => props.width};
+  border-radius: ${props => props.radius};
 `;
 
 export default AbsolutelyPosition;

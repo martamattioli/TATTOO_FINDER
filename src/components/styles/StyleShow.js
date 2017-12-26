@@ -25,7 +25,7 @@ class StyleShow extends React.Component {
       .get(`/api/styles/${id}`)
       .then(res => {
         this.props.history.push(`/styles/${id}`);
-        this.setState({style: res.data}, () => console.log(this.state));
+        this.setState({style: res.data});
       })
       .catch(err => console.log(err));
   }

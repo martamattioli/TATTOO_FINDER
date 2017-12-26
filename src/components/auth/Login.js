@@ -43,7 +43,10 @@ class Login extends React.Component {
         } else {
           this.props.history.push({
             pathname: '/',
-            state: { message: res.data.message }
+            state: {
+              message: res.data.message,
+              type: 'success'
+            }
           });
         }
       })
