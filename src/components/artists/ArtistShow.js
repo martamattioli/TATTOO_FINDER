@@ -88,9 +88,11 @@ class ArtistShow extends React.Component {
           <Link to="/my-profile">Back</Link>
           <button onClick={this.closeMsg}>Close</button>
         </Message>}
-        { this.state.isAdminLoggedIn && <ActualButton
-          onClick={this.goToProfileEdit}
-        >EDIT</ActualButton>}
+        { Auth.isAuthenticated() &&
+          ((this.state.isAdminLoggedIn && !this.state.artist.isClaimed) ||
+          Auth.getPayload().userId === this.state.artist.id) && <ActualButton
+            onClick={this.goToProfileEdit}
+          >EDIT</ActualButton>}
         <Profile
           user={this.state.artist}
           fetchArtist={this.fetchArtist}

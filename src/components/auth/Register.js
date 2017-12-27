@@ -17,6 +17,7 @@ class Register extends React.Component {
         email: '',
         password: '',
         passwordConfirmation: '',
+        base64: '',
         role: 'user'
       }
     };
@@ -27,8 +28,9 @@ class Register extends React.Component {
   }
 
   handleChange({ target: { name, value }}) {
+    console.log('handling change');
     const user = Object.assign({}, this.state.user, { [name]: value });
-    this.setState({ user });
+    this.setState({ user }, () => console.log(this.state));
   }
 
   changeRole(role) {
@@ -38,7 +40,7 @@ class Register extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    console.log(this.state.user);
     Axios
       .post('/api/register', this.state.user)
       .then(res => {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const s3 = require('../lib/s3');
 const { Schema } = mongoose;
 
 const ratingsReviewsSchema = require('./Rating');
@@ -88,18 +89,37 @@ userSchema
   .virtual('percentageComplete')
   .get(percentageComplete);
 
+userSchema
+  .path('image')
+  .set(function getPreviousImage(image) {
+    console.log(this._image, this.image);
+    this._image = this.image;
+    return image;
+  });
+
+userSchema
+  .virtual('imageSRC')
+  .get(function getImageSRC() {
+    if(!this.image) return null;
+    if(this.image.match(/^http/)) return this.image;
+    return `https://s3-eu-west-2.amazonaws.com/${process.env.AWS_BUCKET_NAME}/${this.image}`;
+  });
+
+userSchema.pre('save', function checkPreviousImage(next) {
+  if(this.isModified('image') && this._image && !this._image.match(/^http/)) {
+    return s3.deleteObject({ Key: this._image }, next);
+  }
+  next();
+});
+
+userSchema.pre('remove', function removeImage(next) {
+  if(this.image && !this.image.match(/^http/)) {
+    return s3.deleteObject({ Key: this.image }, next);
+  }
+  next();
+});
+
 userSchema.methods.checkRegistrationCode = checkRegistrationCode;
-  // .path('registrationCode')
-  // .validate(validateRegistrationCode);
-
-// userSchema
-//   .post('init', checkRegistrationCode);
-
-
-// userSchema
-//   .path('username')
-//   .validate(validateUsername);
-
 userSchema.methods.validatePassword = validatePassword;
 
 module.exports = mongoose.model('User', userSchema);
@@ -183,8 +203,8 @@ function percentageComplete() {
 }
 
 function checkRegistrationCode(registrationCode) {
-  console.log(bcrypt.compareSync(registrationCode, this.registrationCode));
-  return bcrypt.compareSync(registrationCode, this.registrationCode);
+  return (registrationCode === new Buffer(registrationCode, 'base64').toString('ascii'));
+  // return bcrypt.compareSync(registrationCode, this.registrationCode);
 }
 
 

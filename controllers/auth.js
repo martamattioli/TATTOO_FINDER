@@ -2,9 +2,12 @@ const jwt = require('jsonwebtoken');
 const { secret } = require('../config/env');
 const User = require('../models/User');
 const Country = require('../models/Country');
+const Registration = require('../models/Registration');
 const bcrypt = require('bcrypt');
 
 function register(req, res, next) {
+  if(req.file) req.body.image = req.file.filename;
+
   Country
     .findOne({ name: new RegExp(req.body.country, 'i') })
     .exec()
@@ -15,7 +18,7 @@ function register(req, res, next) {
         if (req.body.country && country) req.body.country = country.id;
       }
 
-      if (req.body.role === 'artist') req.body.registrationCode = generateId();
+      if (req.body.role === 'artist') req.body.registrationCode = generateId(req.body);
 
       return User
         .create(req.body);
@@ -27,14 +30,20 @@ function register(req, res, next) {
     .catch(next);
 }
 
-function generateId() {
+function generateId(body) {
   let registrationCode = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (var i = 0; i < 5; i++)
     registrationCode += possible.charAt(Math.floor(Math.random() * possible.length));
-  console.log('this is the registrationCode', registrationCode);
+
+  Registration
+    .create({
+      code: new Buffer(registrationCode).toString('base64'),
+      email: new Buffer(body.email).toString('base64') })
+    .catch(err => console.log(err));
+  // console.log(registrationCode, new Buffer(registrationCode, 'base64').toString('ascii'));
+
   registrationCode = bcrypt.hashSync(registrationCode, bcrypt.genSaltSync(8));
-  console.log(registrationCode);
   return registrationCode;
 }
 
@@ -61,7 +70,6 @@ function artistFirstLogin(req, res, next) {
     .then(user => {
       // console.log('USER FOUND', user);
       if (!user || !user.checkRegistrationCode(req.body.registrationCode)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
-      // if (!user || !user.validatePassword(req.body.password) || (user.role === 'artist' && !req.body.registrationCode)) return res.status(401).json({ message: 'Oh man... It seems like you entered some invalid credentials, try again!' });
 
       for (const field in req.body) {
         if (field === 'registrationCode') {

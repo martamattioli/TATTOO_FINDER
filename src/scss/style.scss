@@ -41,3 +41,18 @@ a {
 .percent-right {
   text-align: right;
 }
+
+div.drag-drop {
+  input[type=file] {
+    display: none;
+  }
+
+  div.dropzone {
+    height: 200px;
+    width: 200px;
+    background-color: #fafafa;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}

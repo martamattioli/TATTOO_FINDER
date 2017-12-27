@@ -20,7 +20,7 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
     <div>
       <div style={{textAlign: 'center', margin: '40px 0 50px 0'}}>
         <ProfilePic
-          picture={user.image}
+          picture={user.imageSRC}
           isClaimed={user.isClaimed}
           size="large"
           isEditable={isEditable}
@@ -117,7 +117,7 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
           </span>}
         </h3>
         { !showStylesForm && <div>
-          { user.styles.length === 0 && <h3>
+          { user.styles.length === 0 && isEditable && <h3>
           Add styles <ActualButton
               onClick={() => showForm('showStylesForm')}
               radius="50%"
@@ -156,7 +156,7 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
           showForm={showForm}
         />}
       </div>
-      <ColoredSection
+      { (isEditable || user.locations.length > 0) && <ColoredSection
         background="darkGrey"
         padding="20px 0"
       >
@@ -188,7 +188,7 @@ const Profile = ({ user, showUserForm, showStylesForm, showForm, fetchArtist, re
             </Col>}
           </Row>
         </Grid>
-      </ColoredSection>
+      </ColoredSection>}
       {/* { user.instaInfo && <Insta
         artist={user}
       />} */}

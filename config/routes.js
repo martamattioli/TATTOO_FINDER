@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const secureRoute = require('../lib/sercureRoute');
+const imageUpload = require('../lib/imageUpload');
 
 const auth = require('../controllers/auth');
 const oauth = require('../controllers/oauth');
@@ -10,9 +11,10 @@ const ratings = require('../controllers/ratingsReviews');
 const styles = require('../controllers/styles');
 const studios = require('../controllers/studios');
 const countries = require('../controllers/countries');
+const registrations = require('../controllers/registrations');
 
 router.route('/register')
-  .post(auth.register);
+  .post(imageUpload, auth.register);
 
 router.route('/login')
   .post(auth.login);
@@ -69,5 +71,8 @@ router.route('/studios/:id')
 router.route('/countries')
   .get(countries.index)
   .post(countries.create);
+
+router.route('/registrations')
+  .get(registrations.index);
 
 module.exports = router;

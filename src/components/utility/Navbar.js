@@ -8,7 +8,7 @@ const Navbar = (props) => {
   function logout(e) {
     e.preventDefault();
     Auth.removeToken();
-    history.push('/');
+    props.history.push('/');
   }
 
   if (props.location.state && props.location.state.message) {

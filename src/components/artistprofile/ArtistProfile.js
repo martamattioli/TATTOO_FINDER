@@ -51,6 +51,7 @@ class ArtistProfile extends React.Component {
     Axios
       .get(`/api/users/${this.state.userId}`)
       .then(res => {
+        console.log(res.data);
         this.doChecks(res, showHide);
       })
       .catch(err => console.log(err));

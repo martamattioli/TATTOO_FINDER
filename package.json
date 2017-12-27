@@ -13,6 +13,7 @@
     "seed": "node db/seeds"
   },
   "dependencies": {
+    "aws-sdk": "^2.175.0",
     "axios": "^0.17.1",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",

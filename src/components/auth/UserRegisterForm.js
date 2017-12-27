@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import Form from '../elements/formElements/Form';
 import Label from '../elements/formElements/Label';
 import TextInput from '../elements/formElements/TextInput';
 import SubmitButton from '../elements/formElements/SubmitButton';
+import DragDrop from '../utility/DragDrop';
 
 const UserRegisterForm = ({ user, cta, handleChange, handleSubmit, registrationCode, passwordPlaceholder }) => {
   return (
@@ -52,6 +52,13 @@ const UserRegisterForm = ({ user, cta, handleChange, handleSubmit, registrationC
           value={user.passwordConfirmation}
           onChange={handleChange}
           placeholder="Confirm password"
+        />
+      </div>
+      <div>
+        <Label>Add an image</Label>
+        <DragDrop
+          onChange={handleChange}
+          value={user.base64 || user.imageSRC}
         />
       </div>
       <SubmitButton>{cta}</SubmitButton>

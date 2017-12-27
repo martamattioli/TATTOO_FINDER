@@ -7,6 +7,7 @@ import Card from '../elements/divs/Card';
 import ActualButton from '../elements/buttons/ActualButton';
 
 import ProfilePic from '../artistprofile/ProfilePic';
+import Icon from '../elements/icons/Icon';
 
 const ArtistCard = ({ artist, thisResourceId, inStudios, size, history, fetchStyle }) => {
   const location = artist.locations.find(location => `${location.studioEvent}` === thisResourceId);
@@ -28,13 +29,20 @@ const ArtistCard = ({ artist, thisResourceId, inStudios, size, history, fetchSty
           style={{margin: '0 0 20px 0'}}
         >
           <ProfilePic
-            picture={artist.image}
+            picture={artist.imageSRC}
             isClaimed={artist.isClaimed}
             size={size}
             moveToTop={`-${moveToTop}`}
             border="solid 4px black"
+            hideTick={true}
           />
-          <h3 style={{marginTop: '10px'}}>{artist.username}</h3>
+          <h3 style={{marginTop: '10px'}}>{artist.username} { artist.isClaimed && <Icon
+            className="fas fa-check-circle"
+            aria-hidden="true"
+            fontSize="12px"
+            color="lightBlue"
+            marginBottom="2px"
+          />}</h3>
         </div>
       </Link>
       { artist.styles.length > 0 && <div>

@@ -5,6 +5,7 @@ const Icon = styled.i`
   color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
   margin-left: ${props => props.addMarginLeft};
   margin-right: ${props => props.addMarginRight};
+  margin-bottom: ${props => props.marginBottom};
   vertical-align: ${props => !props.verticalAlign ? null : '20px'};
   transition: all 0.3s linear;
 

@@ -3,7 +3,7 @@ import React from 'react';
 import Circle from '../elements/divs/Circle';
 import Icon from '../elements/icons/Icon';
 
-const ProfilePic = ({ picture, isClaimed, size, moveToTop, isEditable, border }) => {
+const ProfilePic = ({ picture, isClaimed, size, moveToTop, isEditable, border, hideTick }) => {
   let fontSize;
   let right;
   if (size === 'small') {
@@ -23,7 +23,7 @@ const ProfilePic = ({ picture, isClaimed, size, moveToTop, isEditable, border })
       moveToTop={moveToTop}
       border={border}
     >
-      { isClaimed && <Icon
+      { isClaimed && !hideTick && <Icon
         className="fas fa-check-circle"
         aria-hidden="true"
         fontSize={fontSize}
